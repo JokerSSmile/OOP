@@ -13,13 +13,14 @@ char ToLowercase(char in) {
 	return in;
 }
 
-void Replace(string& str, string& find, string& replace, fstream& fout)
+void Replace(const char str[], char find[], char replace[], fstream& fout)
 {
 	unsigned k = 0;
 	unsigned long i = 0;
-	unsigned findLength = find.size();
+	unsigned findLength = strlen(find);
+	unsigned strLength = strlen(str);
 
-	while (i < str.size())
+	while (i < strLength)
 	{
 		if (ToLowercase(str[i]) == ToLowercase(find[k]))
 		{
@@ -49,9 +50,9 @@ void Replace(string& str, string& find, string& replace, fstream& fout)
 	}
 }
 
-void WorkWithInput(ifstream& fin, fstream& fout, string& find, string& replace)
+void WorkWithInput(ifstream& fin, fstream& fout, char find[], char replace[])
 {
-	if (!fin.is_open())
+	if (fin.is_open() == false)
 	{
 		cout << "Error while opening file" << endl;
 	}
@@ -69,39 +70,34 @@ void WorkWithInput(ifstream& fin, fstream& fout, string& find, string& replace)
 				fout << "\n";
 			}
 			getline(fin, line);
-			Replace(line, find, replace, fout);
+			Replace(line.c_str(), find, replace, fout);
 			lineCount++;
 		}
 	}
 }
 
-void RunApp(string& inputFile, string& outputFile, string& find, string& replace)
+void RunApp(char inputFile[], char outputFile[], char find[], char replace[])
 {
-	if (find.size() == 0)
-	{
-		ifstream fin(inputFile, ios_base::in);
-		fstream fout(outputFile, ios_base::out);
-		WorkWithInput(fin, fout, find, replace);
-		fin.close();
-		fout.close();
-		cout << "Done" << endl;
-	}
-	else
-	{
-		cout << "Size of string to find must be more then 0" << endl;
-	}
+	ifstream fin(inputFile, ios_base::in);
+	fstream fout(outputFile, ios_base::out);
+	WorkWithInput(fin, fout, find, replace);
+	fin.close();
+	fout.close();
+	cout << "Done" << endl;
 }
 
 int main(int argc, char * argv[])
 {
+	srand(time(0));
  	if (argc == 5)
 	{
-		RunApp(string(argv[1]), string(argv[2]), string(argv[3]), string(argv[4]));
+		RunApp(argv[1], argv[2], argv[3], argv[4]);
 	}
 	else
 	{
 		cout << "Need 4 arguments" << endl;
 	}
+	cout << "runtime = " << clock() / 1000.0 << endl;
 	system("pause");
 	return 0;
 }
