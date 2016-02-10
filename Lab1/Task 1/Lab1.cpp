@@ -1,7 +1,7 @@
-//cd C:\Users\oleg\Documents\Visual Studio 2015\Projects\OOP\Lab1\Debug
-//Lab1.exe input.txt output.txt find replace
-
-#include "stdafx.h"
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <ctime>
 
 using namespace std;
 
@@ -19,6 +19,11 @@ void Replace(const char str[], char find[], char replace[], fstream& fout)
 	unsigned long i = 0;
 	unsigned findLength = strlen(find);
 	unsigned strLength = strlen(str);
+
+	if (findLength > strLength)
+	{
+		return;
+	}
 
 	while (i < strLength)
 	{
@@ -52,27 +57,20 @@ void Replace(const char str[], char find[], char replace[], fstream& fout)
 
 void WorkWithInput(ifstream& fin, fstream& fout, char find[], char replace[])
 {
-	if (fin.is_open() == false)
-	{
-		cout << "Error while opening file" << endl;
-	}
-	else
-	{
-		cout << "Working..." << endl;
+	cout << "Working..." << endl;
 
-		string line;
-		int lineCount = 0;
+	string line;
+	int lineCount = 0;
 
-		while (!fin.eof())
+	while (!fin.eof())
+	{
+		if (lineCount != 0)
 		{
-			if (lineCount != 0)
-			{
-				fout << "\n";
-			}
-			getline(fin, line);
-			Replace(line.c_str(), find, replace, fout);
-			lineCount++;
+			fout << "\n";
 		}
+		getline(fin, line);
+		Replace(line.c_str(), find, replace, fout);
+		lineCount++;
 	}
 }
 
@@ -80,6 +78,11 @@ void RunApp(char inputFile[], char outputFile[], char find[], char replace[])
 {
 	ifstream fin(inputFile, ios_base::in);
 	fstream fout(outputFile, ios_base::out);
+	if (fin.is_open() == false || fout.is_open() == false)
+	{
+		cout << "Error while opening files" << endl;
+		return;
+	}
 	WorkWithInput(fin, fout, find, replace);
 	fin.close();
 	fout.close();
@@ -88,6 +91,7 @@ void RunApp(char inputFile[], char outputFile[], char find[], char replace[])
 
 int main(int argc, char * argv[])
 {
+	cout << "This program replace given find string to given replace string in input file and saves the result to output file\n" << endl;
 	srand(time(0));
  	if (argc == 5)
 	{
@@ -95,7 +99,7 @@ int main(int argc, char * argv[])
 	}
 	else
 	{
-		cout << "Need 4 arguments" << endl;
+		cout << "Input must be:\nLab1.exe <input.txt> <output.txt> <find> <replace>" << endl;
 	}
 	cout << "runtime = " << clock() / 1000.0 << endl;
 	system("pause");
