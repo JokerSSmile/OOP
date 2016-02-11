@@ -8,22 +8,23 @@ const short MATRIX_SIZE = 3;
 
 using namespace std;
 
-void GetInputData(ifstream& file, float matrix[MATRIX_SIZE][MATRIX_SIZE])
+void ReadStartMatrix(ifstream& file, float matrix[MATRIX_SIZE][MATRIX_SIZE])
 {
 	string line;
+
 	int row = 0;
-	int col;
-	float num;
+	int column;
+	float currentNumber;
 	while (!file.eof())
 	{
 		while (getline(file, line))
 		{
 			istringstream myStream(line);
-			col = 0;
-			while (myStream >> num)
+			column = 0;
+			while (myStream >> currentNumber)
 			{
-				matrix[row][col] = num;
-				col++;
+				matrix[row][column] = currentNumber;
+				column++;
 			}
 			row++;
 		}
@@ -32,39 +33,39 @@ void GetInputData(ifstream& file, float matrix[MATRIX_SIZE][MATRIX_SIZE])
 
 float CalculateMatrixDeterminant(float matrix[MATRIX_SIZE][MATRIX_SIZE])
 {
-	float linePlus = { matrix[0][0] * matrix[1][1] * matrix[2][2] };
-	float lineMinus = { matrix[0][2] * matrix[1][1] * matrix[2][0] };
-	float firstTrianglePlus = { matrix[0][1] * matrix[1][2] * matrix[2][0] };
-	float firstTriangleMinus = { matrix[0][1] * matrix[1][0] * matrix[2][2] };
-	float secondTrianglePlus = { matrix[0][2] * matrix[1][0] * matrix[2][1] };
-	float secondTriangleMinus = { matrix[0][0] * matrix[1][2] * matrix[2][1] };
+	float firstDiagonalPlus = { matrix[0][0] * matrix[1][1] * matrix[2][2] };
+	float firstDiagonalMinus = { matrix[0][2] * matrix[1][1] * matrix[2][0] };
+	float secondDiagonalPlus = { matrix[0][1] * matrix[1][2] * matrix[2][0] };
+	float secondDiagonalMinus = { matrix[0][1] * matrix[1][0] * matrix[2][2] };
+	float thirdDiagonalPlus = { matrix[0][2] * matrix[1][0] * matrix[2][1] };
+	float thirdDiagonalMinus = { matrix[0][0] * matrix[1][2] * matrix[2][1] };
 
-	return linePlus + firstTrianglePlus + secondTrianglePlus - lineMinus - firstTriangleMinus - secondTriangleMinus;
+	return firstDiagonalPlus + secondDiagonalPlus + thirdDiagonalPlus - firstDiagonalMinus - secondDiagonalMinus - thirdDiagonalMinus;
 }
 
 float CalculateMatrixAdditions(const int& col, const int& row, float matrix[3][3])
 {
-	vector<float> tempMatrix;
+	vector<float> matrixElementsExcludingElementsOnColumnAndRow;
 
-	for (unsigned i = 0; i < MATRIX_SIZE; i++)
+	for (size_t i = 0; i < MATRIX_SIZE; i++)
 	{
-		for (unsigned k = 0; k < MATRIX_SIZE; k++)
+		for (size_t k = 0; k < MATRIX_SIZE; k++)
 		{
 			if (i != row && k != col)
 			{
-				tempMatrix.push_back(matrix[i][k]);
+				matrixElementsExcludingElementsOnColumnAndRow.push_back(matrix[i][k]);
 			}
 		}
 	}
 
-	return static_cast<float> (pow(-1, (col + 1) + (row + 1))*(tempMatrix[0] * tempMatrix[3] - tempMatrix[1] * tempMatrix[2]));
+	return static_cast<float> (pow(-1, (col + 1) + (row + 1))*(matrixElementsExcludingElementsOnColumnAndRow[0] * matrixElementsExcludingElementsOnColumnAndRow[3] - matrixElementsExcludingElementsOnColumnAndRow[1] * matrixElementsExcludingElementsOnColumnAndRow[2]));
 }
 
 void CalculateInverseMatrix(float inverseMatrix[MATRIX_SIZE][MATRIX_SIZE], float unionMatrix[MATRIX_SIZE][MATRIX_SIZE], const float& determinant)
 {
-	for (unsigned i = 0; i < MATRIX_SIZE; i++)
+	for (size_t i = 0; i < MATRIX_SIZE; i++)
 	{
-		for (unsigned k = 0; k < MATRIX_SIZE; k++)
+		for (size_t k = 0; k < MATRIX_SIZE; k++)
 		{
 			inverseMatrix[i][k] = unionMatrix[k][i] * (1 / determinant);
 		}
@@ -74,9 +75,9 @@ void CalculateInverseMatrix(float inverseMatrix[MATRIX_SIZE][MATRIX_SIZE], float
 void DrawResulMatrix(float matrix[MATRIX_SIZE][MATRIX_SIZE])
 {
 	cout << "Inversed matrix" << endl;
-	for (unsigned i = 0; i < MATRIX_SIZE; i++)
+	for (size_t i = 0; i < MATRIX_SIZE; i++)
 	{
-		for (unsigned k = 0; k < MATRIX_SIZE; k++)
+		for (size_t k = 0; k < MATRIX_SIZE; k++)
 		{
 			cout << int(matrix[i][k] * 1000) / 1000.0 << "\t";
 		}
@@ -97,17 +98,24 @@ void RunApp(char* inputFileName)
 		float unionMatrix[MATRIX_SIZE][MATRIX_SIZE];
 		float inverseMatrix[MATRIX_SIZE][MATRIX_SIZE];
 
-		GetInputData(fin, givenMatrix);
-
-		for (unsigned i = 0; i < MATRIX_SIZE; i++)
+		float determinant = CalculateMatrixDeterminant(givenMatrix);
+		if (determinant == 0)
 		{
-			for (unsigned k = 0; k < MATRIX_SIZE; k++)
+			cout << "Inverse martix does not exist. Determinant of the given matrix is 0" << endl;
+			return;
+		}
+
+		ReadStartMatrix(fin, givenMatrix);
+
+		for (size_t i = 0; i < MATRIX_SIZE; i++)
+		{
+			for (size_t k = 0; k < MATRIX_SIZE; k++)
 			{
 				unionMatrix[i][k] = CalculateMatrixAdditions(k, i, givenMatrix);
 			}
 		}
 
-		CalculateInverseMatrix(inverseMatrix, unionMatrix, CalculateMatrixDeterminant(givenMatrix));
+		CalculateInverseMatrix(inverseMatrix, unionMatrix, determinant);
 
 		DrawResulMatrix(inverseMatrix);
 	}
