@@ -5,6 +5,8 @@
 
 using namespace std;
 
+const unsigned MAX_FILE_SIZE = 2147483647;
+
 char ToLowercase(char in) {
 	if (in <= 'Z' && in >= 'A')
 	{
@@ -55,7 +57,7 @@ void Replace(const char str[], char find[], char replace[], fstream& fout)
 	}
 }
 
-void WorkWithInput(ifstream& fin, fstream& fout, char find[], char replace[])
+void FillOutputMatrix(ifstream& fin, fstream& fout, char find[], char replace[])
 {
 	cout << "Working..." << endl;
 
@@ -74,6 +76,19 @@ void WorkWithInput(ifstream& fin, fstream& fout, char find[], char replace[])
 	}
 }
 
+bool IsFileSizeCorrect(char inputFile[])
+{
+	ifstream file(inputFile, ios::in);
+	file.seekg(0, std::ios::end);
+
+	if (file.tellg() > MAX_FILE_SIZE)
+	{
+		std::cout << "File size must be less than 2GB";
+		return false;
+	}
+	return true;
+}
+
 void RunApp(char inputFile[], char outputFile[], char find[], char replace[])
 {
 	ifstream fin(inputFile, ios_base::in);
@@ -83,7 +98,12 @@ void RunApp(char inputFile[], char outputFile[], char find[], char replace[])
 		cout << "Error while opening files" << endl;
 		return;
 	}
-	WorkWithInput(fin, fout, find, replace);
+	if (IsFileSizeCorrect(inputFile) == false)
+	{
+		cout << "Too big file size" << endl;
+		return;
+	}
+	FillOutputMatrix(fin, fout, find, replace);
 	fin.close();
 	fout.close();
 	cout << "Done" << endl;
