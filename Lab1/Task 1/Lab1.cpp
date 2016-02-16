@@ -112,7 +112,6 @@ void RunApp(char inputFile[], char outputFile[], char find[], char replace[])
 int main(int argc, char * argv[])
 {
 	cout << "This program replace given find string to given replace string in input file and saves the result to output file\n" << endl;
-	srand(time(0));
  	if (argc == 5)
 	{
 		RunApp(argv[1], argv[2], argv[3], argv[4]);
