@@ -26,3 +26,14 @@
 *.exe
 *.out
 *.app
+
+*.sdf
+*.opendb
+*.iobj
+*.ipdb
+*.pdb
+*.vcxproj.filters
+*.vcxproj
+*.tlog
+*.log
+
