@@ -1,3 +1,4 @@
+ECHO off
 REM
 Lab1.exe
 IF NOT ERRORLEVEL 1 GOTO err
@@ -28,7 +29,7 @@ IF ERRORLEVEL 1 GOTO err
 FC /b output_test3.txt output.txt
 IF ERRORLEVEL 1 GOTO err
 
-ECHO Tests are finished successfully.
+ECHO Tests are successful.
 EXIT /B
   
 :err
