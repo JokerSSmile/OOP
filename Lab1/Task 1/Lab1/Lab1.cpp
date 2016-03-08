@@ -67,34 +67,33 @@ void FillOutputFile(ifstream& fin, fstream& fout, char find[], char replace[])
 			fout << "\n";
 		}
 		Replace(line.c_str(), find, replace, fout);
-		lineCount++;
+		if (lineCount < 2)
+		{
+			lineCount++;
+		}
 	}
-}
-
-void RunApp(char inputFile[], char outputFile[], char find[], char replace[])
-{
-	ifstream fin(inputFile, ios_base::in);
-	fstream fout(outputFile, ios_base::out);
-	if (fin.is_open() == false || fout.is_open() == false)
-	{
-		cout << "Error while opening files" << endl;
-		return;
-	}
-	FillOutputFile(fin, fout, find, replace);
-	fin.close();
-	fout.close();
-	cout << "Done" << endl;
 }
 
 int main(int argc, char * argv[])
 {
  	if (argc == 5)
 	{
-		RunApp(argv[1], argv[2], argv[3], argv[4]);
+		ifstream fin(argv[1], ios_base::in);
+		fstream fout(argv[2], ios_base::out);
+		if (fin.is_open() == false || fout.is_open() == false)
+		{
+			cout << "Error while opening files" << endl;
+			return 1;
+		}
+		FillOutputFile(fin, fout, argv[3], argv[4]);
+		fin.close();
+		fout.close();
+		cout << "Done" << endl;
 	}
 	else
 	{
 		cout << "Input must be:\nLab1.exe <input.txt> <output.txt> <find> <replace>" << endl;
+		return 1;
 	}
 	return 0;
 }
