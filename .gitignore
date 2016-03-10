@@ -27,6 +27,7 @@
 *.out
 *.app
 
+# Added
 *.sdf
 *.opendb
 *.iobj
