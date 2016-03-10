@@ -1,0 +1,5 @@
+﻿  Lab1_2.cpp
+c:\users\oleg\documents\visual studio 2015\projects\oop\lab1_2\lab1_2\lab1_2.cpp(41): warning C4244: инициализация: преобразование "double" в "float", возможна потеря данных
+c:\users\oleg\documents\visual studio 2015\projects\oop\lab1_2\lab1_2\lab1_2.cpp(42): warning C4244: инициализация: преобразование "double" в "float", возможна потеря данных
+c:\users\oleg\documents\visual studio 2015\projects\oop\lab1_2\lab1_2\lab1_2.cpp(43): warning C4244: инициализация: преобразование "double" в "float", возможна потеря данных
+  Lab1_2.vcxproj -> C:\Users\oleg\documents\visual studio 2015\Projects\OOP\Lab1_2\Debug\Lab1_2.exe
