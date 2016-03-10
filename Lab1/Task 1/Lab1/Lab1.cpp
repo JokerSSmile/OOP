@@ -13,49 +13,49 @@ char ToLowercase(char in) {
 	return in;
 }
 
-void Replace(const char str[], char find[], char replace[], fstream& fout)
+void Replace(const string& str, const string& find, const string& replace, ofstream& fout)
 {
-	unsigned k = 0;
-	unsigned long i = 0;
-	unsigned findLength = strlen(find);
-	unsigned strLength = strlen(str);
+	size_t positionInFindString = 0;
+	size_t positionInGivenString = 0;
+	size_t findLength = find.size();
+	size_t strLength = str.size();
 
 	if (findLength > strLength)
 	{
 		return;
 	}
 
-	while (i < strLength)
+	while (positionInGivenString < strLength)
 	{
-		if (ToLowercase(str[i]) == ToLowercase(find[k]))
+		if (ToLowercase(str[positionInGivenString]) == ToLowercase(find[positionInFindString]))
 		{
-			k++;
-			i++;
-			if (k == findLength)
+			positionInFindString++;
+			positionInGivenString++;
+			if (positionInFindString == findLength)
 			{
 				fout << replace;
-				k = 0;
+				positionInFindString = 0;
 			}
 		}
 		else
 		{
-			if (k == 0)
+			if (positionInFindString == 0)
 			{
-				fout << str[i];
-				k = 0;
-				i++;
+				fout << str[positionInGivenString];
+				positionInFindString = 0;
+				positionInGivenString++;
 			}
 			else
 			{
-				i -= k - 1;
-				fout << str[i - 1];
-				k = 0;
+				positionInGivenString -= positionInFindString - 1;
+				fout << str[positionInGivenString - 1];
+				positionInFindString = 0;
 			}
 		}
 	}
 }
 
-void FillOutputFile(ifstream& fin, fstream& fout, char find[], char replace[])
+void ReplaceStringInFile(ifstream& fin, ofstream& fout, string& find, string& replace)
 {
 	string line;
 	int lineCount = 0;
@@ -66,7 +66,7 @@ void FillOutputFile(ifstream& fin, fstream& fout, char find[], char replace[])
 		{
 			fout << "\n";
 		}
-		Replace(line.c_str(), find, replace, fout);
+		Replace(line, find, replace, fout);
 		if (lineCount < 2)
 		{
 			lineCount++;
@@ -79,15 +79,13 @@ int main(int argc, char * argv[])
  	if (argc == 5)
 	{
 		ifstream fin(argv[1], ios_base::in);
-		fstream fout(argv[2], ios_base::out);
-		if (fin.is_open() == false || fout.is_open() == false)
+		ofstream fout(argv[2], ios_base::out);
+		if (!fin.is_open() || !fout.is_open())
 		{
 			cout << "Error while opening files" << endl;
 			return 1;
 		}
-		FillOutputFile(fin, fout, argv[3], argv[4]);
-		fin.close();
-		fout.close();
+		ReplaceStringInFile(fin, fout, string(argv[3]), string(argv[4]));
 		cout << "Done" << endl;
 	}
 	else
