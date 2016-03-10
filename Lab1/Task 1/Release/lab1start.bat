@@ -1,1 +1,0 @@
-Lab1.exe input.txt output.txt ma mama

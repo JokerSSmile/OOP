@@ -1,1 +1,0 @@
-Put in this folder .exe file to check if it passes tests.
