@@ -76,7 +76,7 @@ int main(int argc, char* argv[])
 {
 	if (argc == 4)
 	{
-		if (RunApp(string(argv[1]), string(argv[2]), string(argv[3])) == false)
+		if (!RunApp(string(argv[1]), string(argv[2]), string(argv[3])))
 		{
 			return 1;
 		}
