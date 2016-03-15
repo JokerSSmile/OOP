@@ -1,18 +1,14 @@
 #include <iostream>
 #include <string>
 #include <iomanip>
+#include <fstream>
 
 using namespace std;
 
-struct Vector2f
+bool IsNumber(const string& str)
 {
-	float x;
-	float y;
-};
-
-bool IsNumber(char str[])
-{
-	for (unsigned i = 0; i < strlen(str); i++)
+	
+	for (unsigned i = 0; i < str.size(); i++)
 	{
 		if (isdigit(str[i]) == false && str[i] != '.' && str[i] != '-')
 		{
@@ -27,21 +23,30 @@ float CalculateDiscriminant(const float& A, const float& B, const float& C)
 	return B * B - 4 * A * C;
 }
 
-Vector2f CalculateRoots(const float& discriminant, const float& A, const float& B)
+void CalculateAndOutputRoots(const float& A, const float& B, const float& discriminant)
 {
-	Vector2f roots;
-	roots.x = (-B + sqrt(discriminant)) / (2 * A);
-	roots.y = (-B - sqrt(discriminant)) / (2 * A);
-	return roots;
+	ofstream fout("output.txt");
+
+	float firstRoot = (-B + sqrt(discriminant)) / (2 * A);
+	cout << std::setprecision(4) << firstRoot << endl;
+	fout << std::setprecision(4) << firstRoot << endl;
+
+	if (discriminant > 0)
+	{
+		float secondRoot = (-B - sqrt(discriminant)) / (2 * A);
+		cout << std::setprecision(4) << secondRoot << endl;
+		fout << std::setprecision(4) << secondRoot << endl;
+	}
+
 }
 
-bool RunApp(char strA[], char strB[], char strC[])
+bool RunApp(string& strA, string& strB, string& strC)
 {
 	if (IsNumber(strA) && IsNumber(strB) && IsNumber(strC))
 	{
-		float A = static_cast<float>(atof(strA));
-		float B = static_cast<float>(atof(strB));
-		float C = static_cast<float>(atof(strC));
+		float A = stof(strA);
+		float B = stof(strB);
+		float C = stof(strC);
 
 		if (A == 0)
 		{
@@ -56,13 +61,8 @@ bool RunApp(char strA[], char strB[], char strC[])
 			return false;
 		}
 
-		Vector2f roots = CalculateRoots(discriminant, A, B);
-
-		cout << std::setprecision(4) << std::fixed << roots.x << endl;
-		if (discriminant > 0)
-		{
-			cout << std::setprecision(4) << std::fixed << roots.y << endl;
-		}
+		CalculateAndOutputRoots(A, B, discriminant);
+		
 	}
 	else
 	{
@@ -76,16 +76,15 @@ int main(int argc, char* argv[])
 {
 	if (argc == 4)
 	{
-		if (RunApp(argv[1], argv[2], argv[3]) == false)
+		if (RunApp(string(argv[1]), string(argv[2]), string(argv[3])) == false)
 		{
 			return 1;
 		}
 	}
 	else
 	{
-			cout << "Need 3 argument/nInput must be: Lab1_2.exe A B C" << endl;
+			cout << "Need 3 argument\nInput must be: Lab1_2.exe <A> <B> <C>\nor\nLab1_2.exe <input_file>" << endl;
 			return 1;
 	}
-	system("pause");
 	return 0;
 }
