@@ -12,7 +12,7 @@ using namespace std;
 bool IsNumber(const string& str)
 {
 
-	for (unsigned i = 0; i < str.size(); i++)
+	for (size_t i = 0; i < str.size(); i++)
 	{
 		if (isdigit(str[i]) == false && str[i] != '.' && str[i] != '-')
 		{
@@ -25,10 +25,10 @@ bool IsNumber(const string& str)
 bool ReadStartMatrix(ifstream& file, float matrix[MATRIX_SIZE][MATRIX_SIZE])
 {
 	string line;
-
 	size_t row = 0;
 	size_t column;
 	string currentNumber;
+	
 	while (getline(file, line))
 	{
 		istringstream myStream(line);
@@ -91,9 +91,13 @@ void CalculateInverseMatrix(float inverseMatrix[MATRIX_SIZE][MATRIX_SIZE], float
 	}
 }
 
-void OutputResulMatrix(float matrix[MATRIX_SIZE][MATRIX_SIZE])
+bool OutputResulMatrix(float matrix[MATRIX_SIZE][MATRIX_SIZE])
 {
 	ofstream fout("output.txt");
+	if (!fout.is_open)
+	{
+		return false;
+	}
 	cout << "Inversed matrix" << endl;
 	for (size_t i = 0; i < MATRIX_SIZE; i++)
 	{
@@ -105,12 +109,14 @@ void OutputResulMatrix(float matrix[MATRIX_SIZE][MATRIX_SIZE])
 		fout << endl;
 		cout << endl;
 	}
+	
+	return true;
 }
 
 bool CalculateAndOutputResult(string& inputFileName)
 {
 	ifstream fin(inputFileName);
-	if (fin.is_open() == false)
+	if (!fin.is_open())
 	{
 		cout << "Error while opening file" << endl;
 		return false;
@@ -143,7 +149,10 @@ bool CalculateAndOutputResult(string& inputFileName)
 
 	CalculateInverseMatrix(inverseMatrix, unionMatrix, determinant);
 	
-	OutputResulMatrix(inverseMatrix);
+	if (!OutputResulMatrix(inverseMatrix))
+	{
+		return false;
+	}
 
 	return true;
 }
