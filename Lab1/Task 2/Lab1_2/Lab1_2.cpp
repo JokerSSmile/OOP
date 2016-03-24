@@ -28,7 +28,7 @@ bool CalculateRoots(const double& A, const double& B, const double& C, double& r
 	}
 	root1 = (-B + sqrt(discriminant)) / (2 * A);
 	root2 = (-B - sqrt(discriminant)) / (2 * A);
-	return true;
+
 }
 
 void OutputRoots(const double& root1, const double& root2)
@@ -44,9 +44,9 @@ int main(int argc, char* argv[])
 {
 	if (argc == 4)
 	{
-		string strA = static_cast<string>(argv[1]);
-		string strB = static_cast<string>(argv[2]);
-		string strC = static_cast<string>(argv[3]);
+		string strA = argv[1];
+		string strB = argv[2];
+		string strC = argv[3];
 		if (IsNumber(strA) && IsNumber(strB) && IsNumber(strC))
 		{
 			double A = stof(strA);
@@ -59,10 +59,7 @@ int main(int argc, char* argv[])
 				cout << "There is no real root" << endl;
 				return 1;
 			}
-			if (!CalculateRoots(A, B, C, root1, root2))
-			{
-				return 1;
-			}
+			CalculateRoots(A, B, C, root1, root2);
 			OutputRoots(root1, root2);
 		}
 		else
