@@ -55,7 +55,7 @@ void Replace(const string& str, const string& find, const string& replace, ofstr
 	}
 }
 
-void ReplaceStringInFile(ifstream& fin, ofstream& fout, string& find, string& replace)
+void ReplaceStringInFile(ifstream& fin, ofstream& fout, const string& find, const string& replace)
 {
 	string line;
 	int lineCount = 0;
