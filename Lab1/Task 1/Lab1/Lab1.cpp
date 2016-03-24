@@ -55,7 +55,7 @@ void Replace(const string& str, const string& find, const string& replace, ofstr
 	}
 }
 
-void ReplaceStringInFile(ifstream& fin, ofstream& fout, string& find, string& replace)
+void ReplaceStringsInFile(ifstream& fin, ofstream& fout, const string& find, const string& replace)
 {
 	string line;
 	int lineCount = 0;
@@ -85,7 +85,7 @@ int main(int argc, char * argv[])
 			cout << "Error while opening files" << endl;
 			return 1;
 		}
-		ReplaceStringInFile(fin, fout, string(argv[3]), string(argv[4]));
+		ReplaceStringsInFile(fin, fout, argv[3], argv[4]);
 		cout << "Done" << endl;
 	}
 	else
