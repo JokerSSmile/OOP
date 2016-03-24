@@ -55,7 +55,11 @@ void Replace(const string& str, const string& find, const string& replace, ofstr
 	}
 }
 
+<<<<<<< HEAD
 void ReplaceStringsInFile(ifstream& fin, ofstream& fout, const string& find, const string& replace)
+=======
+void ReplaceStringInFile(ifstream& fin, ofstream& fout, const string& find, const string& replace)
+>>>>>>> 3e3c1be0d3854f0cc34fbc3b03886f92cd54cd8b
 {
 	string line;
 	int lineCount = 0;
