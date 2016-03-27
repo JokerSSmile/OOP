@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "DivideByHalfOfMax.h"
 
 std::vector<double> ReadInputToVector()
@@ -8,7 +9,7 @@ std::vector<double> ReadInputToVector()
 	return vec;
 }
 
-std::vector<double> DivideToAHalfOfMaxElement(const std::vector<double>& vec)
+std::vector<double> DivideToAHalfOfMaxElement(std::vector<double>& vec)
 {
 	std::vector<double> resultVec = vec;
 	double maxElement = *std::max_element(resultVec.begin(), resultVec.end());
