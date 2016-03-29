@@ -53,17 +53,9 @@ bool CRectangle::Intersects(const CRectangle& other)
 	{
 		CRectangle intersectRect;
 		intersectRect.left = std::max(this->left, other.left);
-		intersectRect.top = std::min(this->top, other.top);
-		//cout << "left" << this->left << endl;
-		//cout << "top" << this->top << endl;
-		//cout << "bot" << std::min(this->GetBottom(), other.GetBottom()) << endl;
-		//cout << "1r" << this->GetRight() << endl;
-		//cout << "2r" << other.GetRight() << endl;
-		//cout << "right" << std::min(this->GetRight(), other.GetRight()) << endl;
-		//cout << "w" << GetRight() - left << endl;
-		//cout << "h" << GetBottom() - top << endl;
-		intersectRect.height = abs(std::min(this->GetBottom(), other.GetBottom()) - this->top);
-		intersectRect.width = abs(std::max(this->GetRight(), other.GetRight()) - this->left);
+		intersectRect.top = std::max(this->top, other.top);
+		intersectRect.height = abs(std::min(this->GetBottom(), other.GetBottom()) - intersectRect.top);
+		intersectRect.width = abs(std::min(this->GetRight(), other.GetRight()) - intersectRect.left);
 		*this = intersectRect;
 		return true;
 	}
