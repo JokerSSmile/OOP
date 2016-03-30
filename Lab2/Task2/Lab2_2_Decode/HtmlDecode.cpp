@@ -23,11 +23,6 @@ std::string Decode(const std::string& givenString)
 	return resultString;
 }
 
-int abc()
-{
-	return 2;
-}
-
 void OutputResult(const std::string& resultString)
 {
 	std::cout << resultString << std::endl;
