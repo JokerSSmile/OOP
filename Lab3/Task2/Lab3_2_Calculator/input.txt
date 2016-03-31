@@ -1,4 +1,5 @@
 let a = 1
-let b = 4
-fn B = c
-fn C = a + b
+let b = a
+let c = 3
+fn A = a + b
+fn C = A + c

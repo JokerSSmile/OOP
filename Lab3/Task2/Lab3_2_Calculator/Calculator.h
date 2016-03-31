@@ -14,12 +14,15 @@ using std::vector;
 class CCalculator
 {
 public:
-	double GetVariableValue(const string& name);
-	bool IsCorrectVariableName(const string& name);
-	bool IsVarableAlreadyExist(const string& name);
-	std::pair<string, double> CCalculator::CreateVariable(const string& name, const double& value);
+	double GetVariableValue(const string& name) const;
+	double CalculateFunctionsBody(const string& name) const;
+	bool IsCorrectVariableName(const string& name) const;
+	bool IsVarableAlreadyExist(const string& name) const;
+	std::pair<string, double> CreateVariable(const string& name, const double& value);
 	void AddVariable(const vector<string>& parameters);
 	void AddFunction(const vector<string>& parameters);
+	void OutputVariablesAndValues();
+	void OutputFunctionsAndValues();
 
 //private:
 	vector<string> operators = {"+", "-", "*", "/"};
