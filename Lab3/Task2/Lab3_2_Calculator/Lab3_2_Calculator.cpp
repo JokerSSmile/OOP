@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include <fstream>
-#include "Calculator.h"
 #include "CalculatorUtils.h"
 
 int main()
@@ -8,7 +7,8 @@ int main()
 	CCalculator calculator;
 	std::ifstream fin("input.txt");
 	vector<vector<string>> commandsFromFin = GetLinesFromInputFile(fin);
-
+	OperateWithCommands(commandsFromFin, calculator);
+	/*
 	for (auto a : commandsFromFin)
 	{
 		for (auto b : a)
@@ -23,45 +23,21 @@ int main()
 		calculator.AddVariable(commandsFromFin[0]);
 		calculator.AddVariable(commandsFromFin[1]);
 		calculator.AddVariable(commandsFromFin[2]);
-		calculator.AddFunction(commandsFromFin[3]);
-		calculator.AddFunction(commandsFromFin[4]);
+		calculator.AddVariable(commandsFromFin[3]);
+		calculator.AddVariable(commandsFromFin[4]);
+		calculator.AddFunction(commandsFromFin[5]);
+		calculator.AddFunction(commandsFromFin[6]);
+		calculator.AddFunction(commandsFromFin[7]);
+		calculator.AddFunction(commandsFromFin[8]);
 	}
 	catch(const std::invalid_argument& err)
 	{
 		cout << err.what() << endl;
 	}
-	/*
-	cout << calculator.variables.size() << " " << calculator.functions.size() << endl;
-	cout << "vars" << endl;
-	for (auto mapa : calculator.variables)
-	{
-		cout << mapa.first << " = " << mapa.second << endl;
-	}
-	cout << "fns" << endl;
-	
-	for (auto mapa : calculator.functions)
-	{
-		cout << mapa.first << " ";
-		for (auto a : mapa.second)
-		{
-			cout << a << " ";
-		}
-		cout << endl;
-	}
-	cout << "--------------" << endl;
-
-	try
-	{
-		cout << calculator.CalculateFunctionsBody("C") << endl;
-	}
-	catch (const std::invalid_argument& err)
-	{
-		cout << err.what() << endl;
-	}
-	*/
 	calculator.OutputVariablesAndValues();
 	cout << "----------" << endl;
 	calculator.OutputFunctionsAndValues();
+	*/
     return 0;
 }
 

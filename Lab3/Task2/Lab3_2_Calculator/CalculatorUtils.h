@@ -6,3 +6,5 @@
 vector<vector<string>> GetLinesFromInputFile(std::ifstream& fin);
 
 #pragma warning (default:4996)
+
+void OperateWithCommands(const vector<vector<string>>& commands, CCalculator& calculator);

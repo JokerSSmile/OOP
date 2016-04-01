@@ -14,7 +14,7 @@ bool IsEngStr(const string& str)
 	return true;
 }
 
-double CCalculator::GetVariableValue(const string& name) const
+double CCalculator::CalculateVariableValue(const string& name) const
 {
 	if (variables.find(name) != variables.end())
 	{
@@ -32,7 +32,7 @@ double CCalculator::CalculateFunctionsBody(const string& name) const
 		{
 			if (variables.find(functionValue[0]) != variables.end())
 			{
-				return GetVariableValue(functionValue[0]);
+				return CalculateVariableValue(functionValue[0]);
 			}
 			else
 			{
@@ -45,7 +45,7 @@ double CCalculator::CalculateFunctionsBody(const string& name) const
 			double secondOperator;
 			if (variables.find(functionValue[0]) != variables.end())
 			{
-				firstOperator = GetVariableValue(functionValue[0]);
+				firstOperator = CalculateVariableValue(functionValue[0]);
 			}
 			else
 			{
@@ -53,7 +53,7 @@ double CCalculator::CalculateFunctionsBody(const string& name) const
 			}
 			if (variables.find(functionValue[2]) != variables.end())
 			{
-				secondOperator = GetVariableValue(functionValue[2]);
+				secondOperator = CalculateVariableValue(functionValue[2]);
 			}
 			else
 			{
@@ -95,20 +95,19 @@ bool CCalculator::IsVarableAlreadyExist(const string& name) const
 	return (variables.find(name) != variables.end() || functions.find(name) != functions.end());
 }
 
-std::pair<string, double> CCalculator::CreateVariable(const string& name, const double& value = NAN)
+void CCalculator::CreateVariable(const string& name, const double& value)
 {
 	std::pair<string, double> variable;
 	if (IsCorrectVariableName(name))
 	{
 		variable.first = name;
 		variable.second = value;
+		variables.insert(variable);
 	}
 	else
 	{
 		throw std::invalid_argument("\tIncorrect variable name \"" + name + "\"");
 	}
-	variables.insert(variable);
-	return variable;
 }
 
 void CCalculator::AddVariable(const vector<string>& parameters)
@@ -131,7 +130,7 @@ void CCalculator::AddVariable(const vector<string>& parameters)
 		{
 			variables.find(parameters[1])->second = boost::lexical_cast<double>(parameters[3]);
 		}
-		catch (boost::bad_lexical_cast& const)
+		catch (const boost::bad_lexical_cast&)
 		{
 			cout << "Error in value name" << endl;
 			return;
@@ -183,7 +182,7 @@ void CCalculator::OutputVariablesAndValues()
 	cout << "> Variables:" << endl;
 	for (const auto& variable : variables)
 	{
-		cout << variable.first << " = " << GetVariableValue(variable.first) << endl;
+		cout << variable.first << ":" << std::setprecision(2) << std::fixed << CalculateVariableValue(variable.first) << endl;
 	}
 	cout << endl;
 }
@@ -193,7 +192,17 @@ void CCalculator::OutputFunctionsAndValues()
 	cout << "> Functions:" << endl;
 	for (const auto& function : functions)
 	{
-		cout << function.first << " = " << CalculateFunctionsBody(function.first) << endl;
+		cout << function.first << ":" << std::setprecision(2) << std::fixed << CalculateFunctionsBody(function.first) << endl;
 	}
 	cout << endl;
+}
+
+int CCalculator::GetVariablesSize()
+{
+	return variables.size();
+}
+
+int CCalculator::GetFunctiosSize()
+{
+	return functions.size();
 }
