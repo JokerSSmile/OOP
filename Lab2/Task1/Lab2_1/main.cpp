@@ -8,7 +8,5 @@ int main()
 	resultVector = DivideToAHalfOfMaxElement(givenVector);
 	SortVector(resultVector);
 	OutputVector(resultVector);
-
-	system("pause");
 	return 0;
 }

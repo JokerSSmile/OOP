@@ -11,8 +11,18 @@ std::vector<double> ReadInputToVector()
 
 std::vector<double> DivideToAHalfOfMaxElement(std::vector<double>& vec)
 {
+	if (vec.size() == 0)
+	{
+		return vec;
+	}
+
 	std::vector<double> resultVec = vec;
 	double maxElement = *std::max_element(resultVec.begin(), resultVec.end());
+
+	if (maxElement == 0)
+	{
+		return vec;
+	}
 
 	for (auto& element : resultVec)
 	{
