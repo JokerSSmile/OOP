@@ -17,8 +17,8 @@ public:
 	int GetLeft() const;
 	int GetTop() const;
 private:
-	int left;
-	int top;
-	unsigned width;
-	unsigned height;
+	int m_left;
+	int m_top;
+	unsigned m_width;
+	unsigned m_height;
 };

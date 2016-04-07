@@ -1,0 +1,2 @@
+Rectangle 0 0 10 10
+Rectangle 0 0 10 20

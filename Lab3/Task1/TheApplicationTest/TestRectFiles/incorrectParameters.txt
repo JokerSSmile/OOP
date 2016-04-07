@@ -1,0 +1,3 @@
+Rectangle 0 0 10 10
+Scale 1 sdf
+Move 0 10

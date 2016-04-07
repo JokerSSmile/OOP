@@ -25,13 +25,11 @@ void ApplyCommandsToRectangle(vector<CRectangle>& rectangles, const vector<vecto
 		{
 			if (command.size() != 5)
 			{
-				throw std::invalid_argument("Error: To create rectangle you must give 5 parameters:\n  Rectangle <left> <top> <width> <height>.");
-				return;
+				throw std::exception("Error: To create rectangle you must give 5 parameters:\n  Rectangle <left> <top> <width> <height>.");
 			}
 			if (isDeclared == true)
 			{
-				throw std::invalid_argument("Error: Declared 2 rectangles in 1 file");
-				return;
+				throw std::exception("Error: Declared 2 rectangles in 1 file");
 			}
 			isDeclared = true;
 			rectangle = CRectangle(stoi(command[1]), stoi(command[2]), stoi(command[3]), stoi(command[4]));
@@ -40,8 +38,7 @@ void ApplyCommandsToRectangle(vector<CRectangle>& rectangles, const vector<vecto
 		{
 			if (command.size() != 3)
 			{
-				throw std::invalid_argument("Error: To move rectangle you must give 3 parameters:\n  Move <dx> <dy>.");
-				return;
+				throw std::exception("Error: To move rectangle you must give 3 parameters:\n  Move <dx> <dy>.");
 			}
 			rectangle.Move(stoi(command[1]), stoi(command[2]));
 		}
@@ -49,8 +46,7 @@ void ApplyCommandsToRectangle(vector<CRectangle>& rectangles, const vector<vecto
 		{
 			if (command.size() != 3)
 			{
-				throw std::invalid_argument("Error: To scale rectangle you must give 3 parameters:\n  Scale <sx> <sy>.");
-				return;
+				throw std::exception("Error: To scale rectangle you must give 3 parameters:\n  Scale <sx> <sy>.");
 			}
 			rectangle.Scale(stoi(command[1]), stoi(command[2]));
 		}
@@ -63,7 +59,6 @@ void OutputInfo(const vector<CRectangle>& rectangles)
 	short currentRectNumber = 1;
 	for (auto rectangle : rectangles)
 	{
-		
 		cout << "Rectangle " << currentRectNumber << endl;
 		cout << "\tLeft Top: " << rectangle.GetLeft() << ", " << rectangle.GetTop() << endl;
 		cout << "\tSize:" << rectangle.GetWidth() << " * " << rectangle.GetHeight() << endl;
@@ -71,22 +66,19 @@ void OutputInfo(const vector<CRectangle>& rectangles)
 		cout << "\tArea: " << rectangle.GetArea() << endl;
 		cout << "\tPerimeter: " << rectangle.GetPerimeter() << endl;
 		currentRectNumber++;
-		
 	}
 }
 
 void OutputIntersectionInfo(vector<CRectangle>& rectangles)
 {
 	if (rectangles[0].Intersects(rectangles[1]))
-	{
-		
+	{	
 		cout << "Intersection rectangle" << endl;
 		cout << "\tLeft Top: " << rectangles[0].GetLeft() << ", " << rectangles[0].GetTop() << endl;
 		cout << "\tSize:" << rectangles[0].GetWidth() << " * " << rectangles[0].GetHeight() << endl;
 		cout << "\tRight Bottom: " << rectangles[0].GetRight() << ", " << rectangles[0].GetBottom() << endl;
 		cout << "\tArea: " << rectangles[0].GetArea() << endl;
 		cout << "\tPerimeter: " << rectangles[0].GetPerimeter() << endl;
-		
 	}
 	else
 	{
