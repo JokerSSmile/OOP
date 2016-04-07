@@ -2,13 +2,16 @@
 #include "Calculator.h"
 #include <boost\lexical_cast.hpp>
 
-bool IsEngStr(const string& str)
+bool IsCorrectStringName(const string& str)
 {
 	for (const auto& ch : str)
 	{
 		if ((ch < 'A' || ch > 'z') || (ch > 'Z'  && ch < 'a'))
 		{
-			return false;
+			if (ch != '_' && (ch < '0' || ch > '9'))
+			{
+				return false;
+			}
 		}
 	}
 	return true;
@@ -20,7 +23,28 @@ double CCalculator::CalculateVariableValue(const string& name) const
 	{
 		return variables.find(name)->second;
 	}
-	throw std::invalid_argument("\tThere is no variable with name \"" + name + "\"");
+	throw std::exception("\tThere is no variable with such name");
+}
+
+double CCalculator::ApplyOperatorToFunctionBody(const double& firstOperator, const double& secondOperator, const string& operand) const
+{
+	if (operand == "+")
+	{
+		return firstOperator + secondOperator;
+	}
+	else if (operand == "-")
+	{
+		return firstOperator - secondOperator;
+	}
+	else if (operand == "*")
+	{
+		return firstOperator * secondOperator;
+	}
+	else if (operand == "/")
+	{
+		return secondOperator == 0 ? NAN : firstOperator / secondOperator;
+	}
+	return NAN;
 }
 
 double CCalculator::CalculateFunctionsBody(const string& name) const
@@ -60,25 +84,10 @@ double CCalculator::CalculateFunctionsBody(const string& name) const
 				secondOperator = CalculateFunctionsBody(functionValue[2]);
 			}
 			
-			if (functionValue[1] == "+")
-			{
-				return firstOperator + secondOperator;
-			}
-			if (functionValue[1] == "-")
-			{
-				return firstOperator - secondOperator;
-			}
-			if (functionValue[1] == "*")
-			{
-				return firstOperator * secondOperator;
-			}
-			if (functionValue[1] == "/")
-			{
-				return firstOperator / secondOperator;
-			}
+			return ApplyOperatorToFunctionBody(firstOperator, secondOperator, functionValue[1]);
 		}
 	}
-	throw std::invalid_argument("\tThere is no function with name \"" + name + "\"");
+	throw std::exception("\tThere is no function with such name");
 }
 
 bool CCalculator::IsCorrectVariableName(const string& name) const
@@ -87,7 +96,7 @@ bool CCalculator::IsCorrectVariableName(const string& name) const
 	{
 		return false;
 	}
-	return IsEngStr(name);
+	return IsCorrectStringName(name);
 }
 
 bool CCalculator::IsVarableAlreadyExist(const string& name) const
@@ -106,7 +115,7 @@ void CCalculator::CreateVariable(const string& name, const double& value)
 	}
 	else
 	{
-		throw std::invalid_argument("\tIncorrect variable name \"" + name + "\"");
+		throw std::exception("\tIncorrect variable name");
 	}
 }
 
@@ -114,7 +123,7 @@ void CCalculator::AddVariable(const vector<string>& parameters)
 {
 	if (parameters.size() != 4)
 	{
-		throw std::invalid_argument("\tIncorect variable declaration (incorrect number of arguments)");
+		throw std::exception("\tIncorect variable declaration (incorrect number of arguments)");
 	}
 	if (!IsVarableAlreadyExist(parameters[1]))
 	{
@@ -132,8 +141,8 @@ void CCalculator::AddVariable(const vector<string>& parameters)
 		}
 		catch (const boost::bad_lexical_cast&)
 		{
-			cout << "Error in value name" << endl;
-			return;
+			variables.erase(parameters[1]);
+			throw std::exception("\tError in value");
 		}
 	}
 
@@ -143,19 +152,19 @@ void CCalculator::AddFunction(const vector<string>& parameters)
 {
 	if (parameters.size() != 4 && parameters.size() != 6)
 	{
-		throw std::invalid_argument("\tIncorect function declaration (incorrect number of arguments)");
+		throw std::exception("\tIncorect function declaration (incorrect number of arguments)");
 	}
 	if (IsVarableAlreadyExist(parameters[1]) || !IsVarableAlreadyExist(parameters[3]) || (parameters.size() == 4 ? false : !IsVarableAlreadyExist(parameters[5])) || parameters[2] != "=")
 	{
-		throw std::invalid_argument("\tIncorect function declaration (incorrect variable name)");
+		throw std::exception("\tIncorect function declaration (incorrect variable name)");
 	}
 	if (parameters.size() == 6)
 	{
-		std::find(operators.begin(), operators.end(), parameters[4]) != operators.end() ? true : throw std::invalid_argument("\tIncorect function declaration (incorrect operator)");
+		std::find(operators.begin(), operators.end(), parameters[4]) != operators.end() ? true : throw std::exception("\tIncorect function declaration (incorrect operator)");
 	}
 	if (!IsCorrectVariableName(parameters[1]))
 	{
-		throw std::invalid_argument("\tIncorrect variable name");
+		throw std::exception("\tIncorrect variable name");
 	}
 
 	vector<string> copyParams = parameters;
@@ -177,7 +186,7 @@ void CCalculator::AddFunction(const vector<string>& parameters)
 	
 }
 
-void CCalculator::OutputVariablesAndValues()
+void CCalculator::OutputVariablesAndValues() const
 {
 	cout << "> Variables:" << endl;
 	for (const auto& variable : variables)
@@ -187,7 +196,7 @@ void CCalculator::OutputVariablesAndValues()
 	cout << endl;
 }
 
-void CCalculator::OutputFunctionsAndValues()
+void CCalculator::OutputFunctionsAndValues() const
 {
 	cout << "> Functions:" << endl;
 	for (const auto& function : functions)
@@ -197,12 +206,12 @@ void CCalculator::OutputFunctionsAndValues()
 	cout << endl;
 }
 
-int CCalculator::GetVariablesSize()
+int CCalculator::GetVariablesSize() const
 {
 	return variables.size();
 }
 
-int CCalculator::GetFunctiosSize()
+int CCalculator::GetFunctiosSize() const
 {
 	return functions.size();
 }
