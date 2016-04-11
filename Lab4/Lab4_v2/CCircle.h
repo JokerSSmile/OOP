@@ -2,13 +2,13 @@
 #include "ISolidShape.h"
 #include "CPoint.h"
 
-class CCircle : ISolidShape
+class CCircle : public ISolidShape
 {
 public:
 	CCircle(const double& x, const double& y, const double& radius, const std::string& strokColor, const std::string& fillColor);
-	double GetArea() override;
-	double GetPerimeter() override;
-	std::string GetType() override;
+	double GetArea() const override;
+	double GetPerimeter() const override;
+	std::string GetType() const override;
 private:
 	CPoint m_center;
 	double m_radius;

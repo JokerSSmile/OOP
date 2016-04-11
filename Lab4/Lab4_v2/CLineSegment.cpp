@@ -1,31 +1,22 @@
 #include "stdafx.h"
-#include "CLineSegment.h"
 
 CLineSegment::CLineSegment(const double& x1, const double& y1, const double& x2,
 	const double& y2, const std::string& strokColor)
 	:IShape(strokColor),
 	m_start(x1, y1, strokColor),
-	m_end(x2, y2, strokColor)
-{
-	CalculateLength();
-}
+	m_end(x2, y2, strokColor) {};
 
-void CLineSegment::CalculateLength()
-{
-	m_length = std::sqrt(std::pow((m_start.GetX() - m_end.GetX()), 2) + std::pow((m_start.GetY() - m_end.GetY()), 2));
-}
-
-double CLineSegment::GetArea()
+double CLineSegment::GetArea() const
 {
 	return 0;
 }
 
-double CLineSegment::GetPerimeter()
+double CLineSegment::GetPerimeter() const
 {
-	return m_length;
+	return std::sqrt(std::pow((m_start.GetX() - m_end.GetX()), 2) + std::pow((m_start.GetY() - m_end.GetY()), 2));
 }
 
-std::string CLineSegment::GetType()
+std::string CLineSegment::GetType() const
 {
 	return "Line Segment";
 }

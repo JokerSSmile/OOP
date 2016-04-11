@@ -2,16 +2,14 @@
 #include "IShape.h"
 #include "CPoint.h"
 
-class CLineSegment : IShape
+class CLineSegment : public IShape
 {
 public:
 	CLineSegment(const double& x1, const double& y1, const double& x2, const double& y2, const std::string& strokColor);
-	double GetArea() override;
-	double GetPerimeter() override;
-	std::string GetType() override;
-	void CalculateLength();
+	double GetArea() const override;
+	double GetPerimeter() const override;
+	std::string GetType() const override;
 private:
 	CPoint m_start;
 	CPoint m_end;
-	double m_length;
 };

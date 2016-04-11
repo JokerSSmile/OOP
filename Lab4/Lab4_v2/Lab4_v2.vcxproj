@@ -150,6 +150,7 @@
     <ClInclude Include="CPoint.h" />
     <ClInclude Include="CRectangle.h" />
     <ClInclude Include="CTriangle.h" />
+    <ClInclude Include="ShapeUtils.h" />
     <ClInclude Include="IShape.h" />
     <ClInclude Include="ISolidShape.h" />
     <ClInclude Include="stdafx.h" />
@@ -162,6 +163,7 @@
     <ClCompile Include="CRectangle.cpp" />
     <ClCompile Include="CTriangle.cpp" />
     <ClCompile Include="Lab4_v2.cpp" />
+    <ClCompile Include="ShapeUtils.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

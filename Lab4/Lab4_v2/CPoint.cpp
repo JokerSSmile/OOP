@@ -1,25 +1,21 @@
 #include "stdafx.h"
-#include "CPoint.h"
 
 CPoint::CPoint(const double& x, const double& y, const std::string& strokColor)
 	:IShape(strokColor),
 	m_x(x),
-	m_y(y)
-{
+	m_y(y) {};
 
-}
-
-double CPoint::GetArea()
+double CPoint::GetArea() const
 {
 	return 0;
 }
 
-double CPoint::GetPerimeter()
+double CPoint::GetPerimeter() const
 {
 	return 0;
 }
 
-std::string CPoint::GetType()
+std::string CPoint::GetType() const
 {
 	return "Point";
 }
