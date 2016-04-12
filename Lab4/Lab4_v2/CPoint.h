@@ -7,7 +7,7 @@ public:
 	CPoint(const double& x, const double& y, const std::string& strokColor);
 	double GetArea() const override;
 	double GetPerimeter() const override;
-	std::string GetType() const override;
+	std::string ToString() const override;
 	double GetX() const;
 	double GetY() const;
 private:

@@ -16,7 +16,8 @@ double CRectangle::GetPerimeter() const
 	return (m_width + m_height) * 2;
 }
 
-std::string CRectangle::GetType() const
+std::string CRectangle::ToString() const
 {
-	return "Rectangle";
+	return "Rectangle <" + std::to_string(m_leftTop.GetX()) + ", " + std::to_string(m_leftTop.GetY()) +
+		" > S = " + std::to_string(GetArea()) + " P = " + std::to_string(GetPerimeter());
 }

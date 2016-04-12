@@ -15,9 +15,9 @@ double CPoint::GetPerimeter() const
 	return 0;
 }
 
-std::string CPoint::GetType() const
+std::string CPoint::ToString() const
 {
-	return "Point";
+	return "Point <" + std::to_string(m_x) + ", " + std::to_string(m_y) + " >";
 }
 
 double CPoint::GetX() const

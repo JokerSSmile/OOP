@@ -20,7 +20,10 @@ double CTriangle::GetPerimeter() const
 	return m_line1.GetPerimeter() + m_line2.GetPerimeter() + m_line3.GetPerimeter();
 }
 
-std::string CTriangle::GetType() const
+std::string CTriangle::ToString() const
 {
-	return "Triangle";
+	return "Triangle <" + std::to_string(m_p1.GetX()) + ", " + std::to_string(m_p1.GetY()) + " > " +
+		" < " + std::to_string(m_p2.GetX()) + ", " + std::to_string(m_p2.GetY()) + " > " +
+		" < " + std::to_string(m_p3.GetX()) + ", " + std::to_string(m_p3.GetY()) + " >" +
+		" S = " + std::to_string(GetArea()) + " P = " + std::to_string(GetPerimeter());
 }

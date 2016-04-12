@@ -1,10 +1,6 @@
 #include "stdafx.h"
 #include "ShapeUtils.h"
 
-auto sortRuleLambda = [](const IShape& s1, const IShape& s2) -> bool
-{
-	return s1.GetPerimeter() < s2.GetPerimeter();
-};
 
 int main()
 {
@@ -14,6 +10,12 @@ int main()
 	ParseCommands(inputData, figures);
 	cout << "------" << endl;
 
+	for (auto& f : figures)
+	{
+		cout << f->ToString() << endl;
+	}
+
+	/*
 	std::sort(figures.begin(), figures.end(), [](std::unique_ptr<IShape>& shape1, std::unique_ptr<IShape>& shape2) {return shape1->GetPerimeter() < shape2->GetPerimeter();});
 
 	for (auto& f : figures)
@@ -29,6 +31,7 @@ int main()
 	{
 		cout << f->GetArea() << endl;
 	}
+	*/
 
     return 0;
 }

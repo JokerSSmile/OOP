@@ -18,7 +18,9 @@ double CCircle::GetPerimeter() const
 	return 2 * C_PI * m_radius;
 }
 
-std::string CCircle::GetType() const
+std::string CCircle::ToString() const
 {
-	return "Circle";
+	return "Circle <" + std::to_string(m_center.GetX()) + ", " + 
+		std::to_string(m_center.GetY()) + "> R = " + std::to_string(m_radius) +
+		" S = " + std::to_string(GetArea()) + " P = " + std::to_string(GetPerimeter());
 }

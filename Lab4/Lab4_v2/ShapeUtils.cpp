@@ -142,5 +142,5 @@ void ParseCommands(const std::vector<std::vector<std::string>>& commands, std::v
 
 void OutputInfoAboutShape(const std::unique_ptr<IShape>& figure)
 {
-	cout << figure->GetType() << " " << figure->GetArea() << " " << figure->GetPerimeter() << endl;
+	cout << figure->ToString() << endl;
 }

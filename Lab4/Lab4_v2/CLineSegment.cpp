@@ -16,7 +16,10 @@ double CLineSegment::GetPerimeter() const
 	return std::sqrt(std::pow((m_start.GetX() - m_end.GetX()), 2) + std::pow((m_start.GetY() - m_end.GetY()), 2));
 }
 
-std::string CLineSegment::GetType() const
+std::string CLineSegment::ToString() const
 {
-	return "Line Segment";
+	return "Line Segment <" + std::to_string(m_start.GetX()) + ", " +
+		std::to_string(m_start.GetY()) + " >, " + std::to_string(m_end.GetX()) +
+		std::to_string(m_end.GetY()) + " > S = " + std::to_string(GetArea()) +
+		std::to_string(GetPerimeter());
 }
