@@ -18,6 +18,13 @@ double CRectangle::GetPerimeter() const
 
 std::string CRectangle::ToString() const
 {
-	return "Rectangle <" + std::to_string(m_leftTop.GetX()) + ", " + std::to_string(m_leftTop.GetY()) +
-		" > S = " + std::to_string(GetArea()) + " P = " + std::to_string(GetPerimeter());
+	return "Rectangle <" + boost::lexical_cast<std::string>(m_leftTop.GetX()) + ", " +
+		boost::lexical_cast<std::string>(m_leftTop.GetY()) +
+		"> S=" + boost::lexical_cast<std::string>(GetArea()) + " P=" +
+		boost::lexical_cast<std::string>(GetPerimeter());
+}
+
+std::string CRectangle::GetType() const
+{
+	return "rectangle";
 }

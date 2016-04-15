@@ -1,6 +1,7 @@
 #pragma once
 #include "IShape.h"
 
+//CPoint(const double& x, const double& y, const std::string& strokColor);
 class CPoint : public IShape
 {
 public:
@@ -8,6 +9,7 @@ public:
 	double GetArea() const override;
 	double GetPerimeter() const override;
 	std::string ToString() const override;
+	std::string GetType() const override;
 	double GetX() const;
 	double GetY() const;
 private:

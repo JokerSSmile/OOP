@@ -3,6 +3,7 @@
 #include "CPoint.h"
 #include "CLineSegment.h"
 
+//CTriangle(const double& x1, const double& y1, const double& x2, const double& y2, const double& x3, const double& y3, const std::string& strokColor, const std::string& fillColor);
 class CTriangle : public ISolidShape
 {
 public:
@@ -11,6 +12,7 @@ public:
 	double GetArea() const override;
 	double GetPerimeter() const override;
 	std::string ToString() const override;
+	std::string GetType() const override;
 private:
 	CPoint m_p1;
 	CPoint m_p2;

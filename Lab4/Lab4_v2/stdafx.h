@@ -10,7 +10,13 @@
 #include <stdio.h>
 #include <tchar.h>
 
+#include <vector>
 #include <string>
+#include <iostream>
+#include <cmath>
+
+#include <SFML/Graphics.hpp>
+#include <boost/lexical_cast.hpp>
 
 #include "CCircle.h"
 #include "CLineSegment.h"
@@ -19,9 +25,8 @@
 #include "CTriangle.h"
 #include "IShape.h"
 #include "ISolidShape.h"
+#include "HexToRgb.h"
 
-using std::cout;
-using std::endl;
 
 
 // TODO: Установите здесь ссылки на дополнительные заголовки, требующиеся для программы

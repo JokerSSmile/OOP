@@ -17,7 +17,12 @@ double CPoint::GetPerimeter() const
 
 std::string CPoint::ToString() const
 {
-	return "Point <" + std::to_string(m_x) + ", " + std::to_string(m_y) + " >";
+	return "Point <" + boost::lexical_cast<std::string>(m_x) + ", " + boost::lexical_cast<std::string>(m_y) + ">";
+}
+
+std::string CPoint::GetType() const
+{
+	return "point";
 }
 
 double CPoint::GetX() const

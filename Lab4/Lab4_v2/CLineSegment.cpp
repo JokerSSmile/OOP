@@ -18,8 +18,13 @@ double CLineSegment::GetPerimeter() const
 
 std::string CLineSegment::ToString() const
 {
-	return "Line Segment <" + std::to_string(m_start.GetX()) + ", " +
-		std::to_string(m_start.GetY()) + " >, " + std::to_string(m_end.GetX()) +
-		std::to_string(m_end.GetY()) + " > S = " + std::to_string(GetArea()) +
-		std::to_string(GetPerimeter());
+	return "Line Segment <" + boost::lexical_cast<std::string>(m_start.GetX()) + ", " +
+		boost::lexical_cast<std::string>(m_start.GetY()) + ">, <" + boost::lexical_cast<std::string>(m_end.GetX()) +
+		 ", " + boost::lexical_cast<std::string>(m_end.GetY()) + "> S=" + boost::lexical_cast<std::string>(GetArea()) +
+		" P=" + boost::lexical_cast<std::string>(GetPerimeter());
+}
+
+std::string CLineSegment::GetType() const
+{
+	return "line";
 }

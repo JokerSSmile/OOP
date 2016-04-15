@@ -20,7 +20,12 @@ double CCircle::GetPerimeter() const
 
 std::string CCircle::ToString() const
 {
-	return "Circle <" + std::to_string(m_center.GetX()) + ", " + 
-		std::to_string(m_center.GetY()) + "> R = " + std::to_string(m_radius) +
-		" S = " + std::to_string(GetArea()) + " P = " + std::to_string(GetPerimeter());
+	return "Circle <" + boost::lexical_cast<std::string>(m_center.GetX()) + ", " +
+		boost::lexical_cast<std::string>(m_center.GetY()) + "> R=" +boost::lexical_cast<std::string>(m_radius) +
+		" S=" + boost::lexical_cast<std::string>(GetArea()) + " P=" + boost::lexical_cast<std::string>(GetPerimeter());
+}
+
+std::string CCircle::GetType() const
+{
+	return "circle";
 }

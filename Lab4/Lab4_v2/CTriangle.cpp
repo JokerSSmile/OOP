@@ -12,7 +12,12 @@ CTriangle::CTriangle(const double& x1, const double& y1, const double& x2, const
 
 double CTriangle::GetArea() const
 {
-	return 0.5 * ((m_p1.GetX() - m_p3.GetX()) * (m_p2.GetY() - m_p3.GetY()) - (m_p2.GetX() - m_p3.GetX()) * (m_p1.GetY() - m_p3.GetY()));
+	std::vector<double> xValues = { m_p1.GetX(), m_p2.GetX(), m_p3.GetX() };
+	std::vector<double> yValues = { m_p1.GetY(), m_p2.GetY(), m_p3.GetY() };
+
+	return 0.5 * ((*std::max_element(xValues.begin(), xValues.end()) - *std::min_element(xValues.begin(), xValues.end())) *
+		(*std::max_element(yValues.begin(), yValues.end()) - *std::min_element(yValues.begin(), yValues.end())));
+
 }
 
 double CTriangle::GetPerimeter() const
@@ -22,8 +27,13 @@ double CTriangle::GetPerimeter() const
 
 std::string CTriangle::ToString() const
 {
-	return "Triangle <" + std::to_string(m_p1.GetX()) + ", " + std::to_string(m_p1.GetY()) + " > " +
-		" < " + std::to_string(m_p2.GetX()) + ", " + std::to_string(m_p2.GetY()) + " > " +
-		" < " + std::to_string(m_p3.GetX()) + ", " + std::to_string(m_p3.GetY()) + " >" +
-		" S = " + std::to_string(GetArea()) + " P = " + std::to_string(GetPerimeter());
+	return "Triangle <" + boost::lexical_cast<std::string>(m_p1.GetX()) + ", " + boost::lexical_cast<std::string>(m_p1.GetY()) + "> " +
+		" <" + boost::lexical_cast<std::string>(m_p2.GetX()) + ", " + boost::lexical_cast<std::string>(m_p2.GetY()) + "> " +
+		" <" + boost::lexical_cast<std::string>(m_p3.GetX()) + ", " + boost::lexical_cast<std::string>(m_p3.GetY()) + ">" +
+		" S=" + boost::lexical_cast<std::string>(GetArea()) + " P=" + boost::lexical_cast<std::string>(GetPerimeter());
+}
+
+std::string CTriangle::GetType() const
+{
+	return "triangle";
 }

@@ -1,37 +1,43 @@
 #include "stdafx.h"
 #include "ShapeUtils.h"
 
+void DrawShapes(const std::vector<std::shared_ptr<sf::Shape>>& drawableShapes)
+{
+	if (drawableShapes.size() == 0)
+	{
+		return;
+	}
+	sf::RenderWindow window(sf::VideoMode(1500, 900), "Shapes");
+	while (window.isOpen())
+	{
+		sf::Event event;
+		while (window.pollEvent(event))
+		{
+			if (event.type == sf::Event::Closed)
+				window.close();
+		}
+
+		window.clear(sf::Color::White);
+		for (const auto& shape : drawableShapes)
+		{
+			window.draw(*shape);
+		}
+		window.display();
+	}
+}
 
 int main()
 {
 	std::vector<std::vector<std::string>> inputData = GetInputData();
-	std::vector<std::unique_ptr<IShape>> figures;
+	std::vector<std::shared_ptr<IShape>> figures;
+	std::vector<std::shared_ptr<sf::Shape>> drawableShapes;
 
-	ParseCommands(inputData, figures);
-	cout << "------" << endl;
+	ParseCommands(inputData, figures, drawableShapes);
+	std::cout << "______" << std::endl;
 
-	for (auto& f : figures)
-	{
-		cout << f->ToString() << endl;
-	}
+	OutputInfoAboutShapes(figures);
 
-	/*
-	std::sort(figures.begin(), figures.end(), [](std::unique_ptr<IShape>& shape1, std::unique_ptr<IShape>& shape2) {return shape1->GetPerimeter() < shape2->GetPerimeter();});
-
-	for (auto& f : figures)
-	{
-		cout << f->GetPerimeter() << endl;
-	}
-
-	cout << endl;
-
-	std::sort(figures.begin(), figures.end(), [](std::unique_ptr<IShape>& shape1, std::unique_ptr<IShape>& shape2) {return shape1->GetArea() < shape2->GetArea();});
-
-	for (auto& f : figures)
-	{
-		cout << f->GetArea() << endl;
-	}
-	*/
+	DrawShapes(drawableShapes);
 
     return 0;
 }
