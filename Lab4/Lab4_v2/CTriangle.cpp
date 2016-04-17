@@ -12,12 +12,9 @@ CTriangle::CTriangle(const double& x1, const double& y1, const double& x2, const
 
 double CTriangle::GetArea() const
 {
-	std::vector<double> xValues = { m_p1.GetX(), m_p2.GetX(), m_p3.GetX() };
-	std::vector<double> yValues = { m_p1.GetY(), m_p2.GetY(), m_p3.GetY() };
+	double p = this->GetPerimeter() / 2;
 
-	return 0.5 * ((*std::max_element(xValues.begin(), xValues.end()) - *std::min_element(xValues.begin(), xValues.end())) *
-		(*std::max_element(yValues.begin(), yValues.end()) - *std::min_element(yValues.begin(), yValues.end())));
-
+	return sqrt(p * (p - m_line1.GetPerimeter()) * (p - m_line2.GetPerimeter()) * (p - m_line3.GetPerimeter()));
 }
 
 double CTriangle::GetPerimeter() const

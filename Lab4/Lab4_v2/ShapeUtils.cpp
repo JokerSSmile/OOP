@@ -33,6 +33,10 @@ void CreateRectangle(const std::vector<std::string>& command, std::vector<std::s
 		double y = stod(command[2]);
 		double width = stod(command[3]);
 		double height = stod(command[4]);
+		if (width < 0 || height < 0)
+		{
+			throw std::exception("");
+		}
 		figures.push_back(std::make_shared<CRectangle>(x, y, width, height, command[5], command[6]));
 		std::shared_ptr<sf::Shape> rect = std::make_shared<sf::RectangleShape>(sf::Vector2f(float(width), float(height)));
 		rect->setPosition(float(x), float(y));
@@ -58,8 +62,13 @@ void CreateCircle(const std::vector<std::string>& command, std::vector<std::shar
 		double x = stod(command[1]);
 		double y = stod(command[2]);
 		double radius = stod(command[3]);
+		if (radius < 0)
+		{
+			throw std::exception("");
+		}
 		figures.push_back(std::make_shared<CCircle>(x, y, radius, command[4], command[5]));
 		std::shared_ptr<sf::Shape> circle = std::make_shared<sf::CircleShape>(int(radius));
+		circle->setOrigin(sf::Vector2f(float(radius), float(radius)));
 		circle->setPosition(float(x), float(y));
 		circle->setOutlineThickness(3);
 		circle->setOutlineColor(HexToRgb(command[4]));
@@ -86,7 +95,7 @@ void CreateLine(const std::vector<std::string>& command, std::vector<std::shared
 		double y2 = stod(command[4]);
 		figures.push_back(std::make_shared<CLineSegment>(x1, y1, x2, y2, command[5]));
 		std::shared_ptr<sf::Shape> line = std::make_shared<sf::RectangleShape>(sf::Vector2f(float(figures.back()->GetPerimeter()), 3.f));
-		line->setPosition(float(x1), float(y1));
+		x2 < x1 ? line->setPosition(float(x2), float(y2)) : line->setPosition(float(x1), float(y1));
 		line->setRotation(float(std::atan((y2 - y1) / (x2 - x1)) * 180 / C_PI));
 		line->setFillColor(HexToRgb(command[5]));
 		drawableFigures.push_back(line);
@@ -193,6 +202,12 @@ void ParseCommands(const std::vector<std::vector<std::string>>& commands, std::v
 
 void OutputInfoAboutShapes(const std::vector<std::shared_ptr<IShape>>& figures)
 {
+	if (figures.size() == 0)
+	{
+		std::cout << "Nothing to output" << std::endl;
+		return;
+	}
+
 	std::vector<std::shared_ptr<IShape>> figuresCopy = figures;
 
 	std::sort(figuresCopy.begin(), figuresCopy.end(), [](std::shared_ptr<IShape>& shape1, std::shared_ptr<IShape>& shape2) {return shape1->GetPerimeter() < shape2->GetPerimeter();});

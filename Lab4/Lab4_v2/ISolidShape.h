@@ -4,7 +4,7 @@
 class ISolidShape : public IShape
 {
 public:
-	ISolidShape(const std::string& fillColor, const std::string& strokeColor)
+	ISolidShape(const std::string& strokeColor, const std::string& fillColor)
 		:IShape(strokeColor),
 		m_fillColor(fillColor) {};
 	std::string GetFillColor()

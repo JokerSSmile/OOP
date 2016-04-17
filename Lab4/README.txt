@@ -1,0 +1,1 @@
+This program draws shapes, by taking their parameters from console
