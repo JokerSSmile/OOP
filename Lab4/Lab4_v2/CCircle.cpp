@@ -4,7 +4,7 @@
 const double C_PI = boost::math::constants::pi<double>();
 
 CCircle::CCircle(const double& x, const double& y, const double& radius, const std::string& strokColor, const std::string& fillColor)
-	:ISolidShape(strokColor, fillColor),
+	:CSolidShape(strokColor, fillColor),
 	m_center(x, y, strokColor),
 	m_radius(radius) {};
 
@@ -25,7 +25,3 @@ std::string CCircle::ToString() const
 		" S=" + boost::lexical_cast<std::string>(GetArea()) + " P=" + boost::lexical_cast<std::string>(GetPerimeter());
 }
 
-std::string CCircle::GetType() const
-{
-	return "circle";
-}

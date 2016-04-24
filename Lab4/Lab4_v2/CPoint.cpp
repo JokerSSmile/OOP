@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
 CPoint::CPoint(const double& x, const double& y, const std::string& strokColor)
-	:IShape(strokColor),
+	:CShape(strokColor),
 	m_x(x),
 	m_y(y) {};
 
@@ -18,11 +18,6 @@ double CPoint::GetPerimeter() const
 std::string CPoint::ToString() const
 {
 	return "Point <" + boost::lexical_cast<std::string>(m_x) + ", " + boost::lexical_cast<std::string>(m_y) + ">";
-}
-
-std::string CPoint::GetType() const
-{
-	return "point";
 }
 
 double CPoint::GetX() const

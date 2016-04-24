@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include <boost/algorithm/string.hpp>
 #include <boost/math/constants/constants.hpp>
+#include "ShapeUtils.h"
+#include "CShape.h"
 
 const double C_PI = boost::math::constants::pi<double>();
 
@@ -21,7 +23,7 @@ std::vector<std::vector<std::string>> GetInputData()
 	return lines;
 }
 
-void CreateRectangle(const std::vector<std::string>& command, std::vector<std::shared_ptr<IShape>>& figures, std::vector<std::shared_ptr<sf::Shape>>& drawableFigures)
+void CreateRectangle(const std::vector<std::string>& command, std::vector<std::shared_ptr<CShape>>& figures, std::vector<std::shared_ptr<sf::Shape>>& drawableFigures)
 {
 	if (command.size() != 7)
 	{
@@ -51,7 +53,7 @@ void CreateRectangle(const std::vector<std::string>& command, std::vector<std::s
 	}
 }
 
-void CreateCircle(const std::vector<std::string>& command, std::vector<std::shared_ptr<IShape>>& figures, std::vector<std::shared_ptr<sf::Shape>>& drawableFigures)
+void CreateCircle(const std::vector<std::string>& command, std::vector<std::shared_ptr<CShape>>& figures, std::vector<std::shared_ptr<sf::Shape>>& drawableFigures)
 {
 	if (command.size() != 6)
 	{
@@ -81,7 +83,7 @@ void CreateCircle(const std::vector<std::string>& command, std::vector<std::shar
 	}
 }
 
-void CreateLine(const std::vector<std::string>& command, std::vector<std::shared_ptr<IShape>>& figures, std::vector<std::shared_ptr<sf::Shape>>& drawableFigures)
+void CreateLine(const std::vector<std::string>& command, std::vector<std::shared_ptr<CShape>>& figures, std::vector<std::shared_ptr<sf::Shape>>& drawableFigures)
 {
 	if (command.size() != 6)
 	{
@@ -106,7 +108,7 @@ void CreateLine(const std::vector<std::string>& command, std::vector<std::shared
 	}
 }
 
-void CreateTriangle(const std::vector<std::string>& command, std::vector<std::shared_ptr<IShape>>& figures, std::vector<std::shared_ptr<sf::Shape>>& drawableFigures)
+void CreateTriangle(const std::vector<std::string>& command, std::vector<std::shared_ptr<CShape>>& figures, std::vector<std::shared_ptr<sf::Shape>>& drawableFigures)
 {
 	if (command.size() != 9)
 	{
@@ -137,7 +139,7 @@ void CreateTriangle(const std::vector<std::string>& command, std::vector<std::sh
 	}
 }
 
-void CreatePoint(const std::vector<std::string>& command, std::vector<std::shared_ptr<IShape>>& figures, std::vector<std::shared_ptr<sf::Shape>>& drawableFigures)
+void CreatePoint(const std::vector<std::string>& command, std::vector<std::shared_ptr<CShape>>& figures, std::vector<std::shared_ptr<sf::Shape>>& drawableFigures)
 {
 	if (command.size() != 4)
 	{
@@ -159,7 +161,7 @@ void CreatePoint(const std::vector<std::string>& command, std::vector<std::share
 	}
 }
 
-void ParseCommands(const std::vector<std::vector<std::string>>& commands, std::vector<std::shared_ptr<IShape>>& figures, std::vector<std::shared_ptr<sf::Shape>>& drawableFigures)
+void ParseCommands(const std::vector<std::vector<std::string>>& commands, std::vector<std::shared_ptr<CShape>>& figures, std::vector<std::shared_ptr<sf::Shape>>& drawableFigures)
 {
 	for (const auto& command : commands)
 	{
@@ -200,28 +202,25 @@ void ParseCommands(const std::vector<std::vector<std::string>>& commands, std::v
 	}
 }
 
-void OutputInfoAboutShapes(const std::vector<std::shared_ptr<IShape>>& figures)
+void OutputInfoAboutShapes(const std::vector<std::shared_ptr<CShape>>& figures)
 {
 	if (figures.size() == 0)
 	{
 		std::cout << "Nothing to output" << std::endl;
 		return;
 	}
+	std::vector<std::shared_ptr<CShape>> figuresCopy = figures;
 
-	std::vector<std::shared_ptr<IShape>> figuresCopy = figures;
-
-	std::sort(figuresCopy.begin(), figuresCopy.end(), [](std::shared_ptr<IShape>& shape1, std::shared_ptr<IShape>& shape2) {return shape1->GetPerimeter() < shape2->GetPerimeter();});
+	std::sort(figuresCopy.begin(), figuresCopy.end(), [](std::shared_ptr<CShape>& shape1, std::shared_ptr<CShape>& shape2) {return shape1->GetPerimeter() < shape2->GetPerimeter();});
 	std::cout << ">Sorted by perimeter" << std::endl;
 	for (const auto& figure : figuresCopy)
 	{
 		std::cout << figure->ToString() << std::endl;
 	}
 
-
 	std::cout << std::endl;
 
-
-	std::sort(figuresCopy.begin(), figuresCopy.end(), [](std::shared_ptr<IShape>& shape1, std::shared_ptr<IShape>& shape2) {return shape1->GetArea() < shape2->GetArea();});
+	std::sort(figuresCopy.begin(), figuresCopy.end(), [](std::shared_ptr<CShape>& shape1, std::shared_ptr<CShape>& shape2) {return shape1->GetArea() < shape2->GetArea();});
 	std::cout << ">Sorted by area" << std::endl;
 	for (const auto& figure : figuresCopy)
 	{

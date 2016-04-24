@@ -5,17 +5,9 @@
 class IShape
 {
 public:
-	IShape(const std::string& color)
-		:m_strokeColor(color) {};
+	IShape() {};
 	virtual double GetArea() const = 0;
 	virtual double GetPerimeter() const = 0;
 	virtual std::string ToString() const = 0;
-	virtual std::string GetType() const = 0;
-	std::string GetStrokeColor()
-	{
-		return m_strokeColor;
-	}
 	virtual ~IShape() = default;
-protected:
-	std::string m_strokeColor;
 };

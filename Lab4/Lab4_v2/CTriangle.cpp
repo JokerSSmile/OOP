@@ -2,7 +2,7 @@
 
 CTriangle::CTriangle(const double& x1, const double& y1, const double& x2, const double& y2, const double& x3,
 	const double& y3, const std::string& strokColor, const std::string& fillColor)
-	:ISolidShape(strokColor, fillColor),
+	:CSolidShape(strokColor, fillColor),
 	m_p1(x1, y1, strokColor),
 	m_p2(x2, y2, strokColor),
 	m_p3(x3, y3, strokColor),
@@ -28,9 +28,4 @@ std::string CTriangle::ToString() const
 		" <" + boost::lexical_cast<std::string>(m_p2.GetX()) + ", " + boost::lexical_cast<std::string>(m_p2.GetY()) + "> " +
 		" <" + boost::lexical_cast<std::string>(m_p3.GetX()) + ", " + boost::lexical_cast<std::string>(m_p3.GetY()) + ">" +
 		" S=" + boost::lexical_cast<std::string>(GetArea()) + " P=" + boost::lexical_cast<std::string>(GetPerimeter());
-}
-
-std::string CTriangle::GetType() const
-{
-	return "triangle";
 }

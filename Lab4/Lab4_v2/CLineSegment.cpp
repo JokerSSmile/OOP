@@ -2,7 +2,7 @@
 
 CLineSegment::CLineSegment(const double& x1, const double& y1, const double& x2,
 	const double& y2, const std::string& strokColor)
-	:IShape(strokColor),
+	:CShape(strokColor),
 	m_start(x1, y1, strokColor),
 	m_end(x2, y2, strokColor) {};
 
@@ -22,9 +22,4 @@ std::string CLineSegment::ToString() const
 		boost::lexical_cast<std::string>(m_start.GetY()) + ">, <" + boost::lexical_cast<std::string>(m_end.GetX()) +
 		 ", " + boost::lexical_cast<std::string>(m_end.GetY()) + "> S=" + boost::lexical_cast<std::string>(GetArea()) +
 		" P=" + boost::lexical_cast<std::string>(GetPerimeter());
-}
-
-std::string CLineSegment::GetType() const
-{
-	return "line";
 }

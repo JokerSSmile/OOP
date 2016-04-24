@@ -26,7 +26,5 @@
 #include "IShape.h"
 #include "ISolidShape.h"
 #include "HexToRgb.h"
-
-
-
-// TODO: Установите здесь ссылки на дополнительные заголовки, требующиеся для программы
+#include "CShape.h"
+#include "CSolidShape.h"

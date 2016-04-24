@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
 CRectangle::CRectangle(const double& x, const double& y, const double& width, const double& height, const std::string& strokeColor, const std::string& fillColor)
-	:ISolidShape(strokeColor, fillColor),
+	:CSolidShape(strokeColor, fillColor),
 	m_leftTop(x, y, strokeColor),
 	m_width(width),
 	m_height(height) {};
@@ -22,9 +22,4 @@ std::string CRectangle::ToString() const
 		boost::lexical_cast<std::string>(m_leftTop.GetY()) +
 		"> S=" + boost::lexical_cast<std::string>(GetArea()) + " P=" +
 		boost::lexical_cast<std::string>(GetPerimeter());
-}
-
-std::string CRectangle::GetType() const
-{
-	return "rectangle";
 }

@@ -29,7 +29,7 @@ void DrawShapes(const std::vector<std::shared_ptr<sf::Shape>>& drawableShapes)
 int main()
 {
 	std::vector<std::vector<std::string>> inputData = GetInputData();
-	std::vector<std::shared_ptr<IShape>> figures;
+	std::vector<std::shared_ptr<CShape>> figures;
 	std::vector<std::shared_ptr<sf::Shape>> drawableShapes;
 
 	ParseCommands(inputData, figures, drawableShapes);
