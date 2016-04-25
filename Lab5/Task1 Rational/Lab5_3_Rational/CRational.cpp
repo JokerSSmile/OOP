@@ -49,12 +49,79 @@ unsigned GCD(unsigned a, unsigned b)
 
 double CRational::ToDouble() const
 {
-	return m_numerator / m_denominator;
+	return (double)m_numerator / m_denominator;
+}
+
+CRational const CRational::operator+() const
+{
+	return *this;
+}
+
+CRational const CRational::operator-() const
+{
+	return CRational(-m_numerator, m_denominator);
+}
+
+CRational const CRational::operator+(const CRational & other) const
+{
+	return CRational(this->GetNumerator() * other.GetDenominator() + other.GetNumerator() * this->GetDenominator(),
+		this->GetDenominator() * other.GetDenominator());
+}
+
+CRational const CRational::operator-(const CRational & other) const
+{
+	return CRational(this->GetNumerator() * other.GetDenominator() - other.GetNumerator() * this->GetDenominator(),
+		this->GetDenominator() * other.GetDenominator());
 }
 
 CRational& CRational::operator+=(const CRational& other)
 {
 	this->m_numerator = this->GetNumerator() * other.GetDenominator() + other.GetNumerator() * this->GetDenominator();
 	this->m_denominator = this->GetDenominator() * other.GetDenominator();
+	Normalize();
 	return *this;
+}
+
+CRational& CRational::operator-=(const CRational& other)
+{
+	this->m_numerator = this->GetNumerator() * other.GetDenominator() - other.GetNumerator() * this->GetDenominator();
+	this->m_denominator = this->GetDenominator() * other.GetDenominator();
+	Normalize();
+	return *this;
+}
+
+CRational& const CRational::operator*(const CRational& other) const
+{
+	return CRational(this->GetNumerator() * other.GetNumerator(), this->GetDenominator() * other.GetDenominator());
+}
+
+CRational& const CRational::operator/(const CRational& other) const
+{
+	return CRational(this->GetNumerator() * other.GetDenominator(), this->GetDenominator() * other.GetNumerator());
+}
+
+CRational& CRational::operator*=(const CRational& other)
+{
+	this->m_numerator = this->GetNumerator() * other.GetNumerator();
+	this->m_denominator = this->GetDenominator() * other.GetDenominator();
+	Normalize();
+	return *this;
+}
+
+CRational& CRational::operator/=(const CRational& other)
+{
+	this->m_numerator = this->GetNumerator() * other.GetDenominator();
+	this->m_denominator = this->GetDenominator() * other.GetNumerator();
+	Normalize();
+	return *this;
+}
+
+bool CRational::operator==(const CRational & other) const
+{
+	return (this->GetNumerator() == other.GetNumerator()) && (this->GetDenominator() == other.GetDenominator());
+}
+
+bool CRational::operator!=(const CRational& other) const
+{
+	return (this->GetNumerator() != other.GetNumerator()) || (this->GetDenominator() != other.GetDenominator());
 }

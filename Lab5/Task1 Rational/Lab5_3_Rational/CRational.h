@@ -10,8 +10,30 @@ public:
 
 	double ToDouble() const;
 
-	CRational& operator +=(const CRational& other);
+	CRational const operator+() const;
+
+	CRational const operator-() const;
 	
+	CRational const operator+(const CRational& other) const;
+
+	CRational const operator-(const CRational& other) const;
+
+	CRational& operator+=(const CRational& other);
+
+	CRational& operator-=(const CRational& other);
+
+	CRational& const operator*(const CRational& other) const;
+
+	CRational& const operator/(const CRational& other) const;
+
+	CRational& operator*=(const CRational& other);
+
+	CRational& operator/=(const CRational& other);
+
+	bool operator==(const CRational& other) const;
+
+	bool operator!=(const CRational& other) const;
+
 private:
 	int m_numerator;
 	int m_denominator;
