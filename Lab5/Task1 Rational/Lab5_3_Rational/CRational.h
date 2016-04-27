@@ -3,7 +3,8 @@
 class CRational final
 {
 public:
-	CRational(int numerator = 0, int denominator = 1);
+	//CRational(const int& value);
+	CRational(const int& numerator = 0, const int& denominator = 1);
 
 	int GetNumerator() const;
 	int GetDenominator() const;
@@ -13,26 +14,14 @@ public:
 	CRational const operator+() const;
 
 	CRational const operator-() const;
-	
-	CRational const operator+(const CRational& other) const;
-
-	CRational const operator-(const CRational& other) const;
 
 	CRational& operator+=(const CRational& other);
 
 	CRational& operator-=(const CRational& other);
 
-	CRational& const operator*(const CRational& other) const;
-
-	CRational& const operator/(const CRational& other) const;
-
 	CRational& operator*=(const CRational& other);
 
 	CRational& operator/=(const CRational& other);
-
-	bool operator==(const CRational& other) const;
-
-	bool operator!=(const CRational& other) const;
 
 private:
 	int m_numerator;
@@ -44,3 +33,27 @@ private:
 
 // Вычисляет наибольший общий знаменатель чисел a и b
 unsigned GCD(unsigned a, unsigned b);
+
+CRational const operator+(const CRational& left, const CRational& right);
+
+CRational const operator-(const CRational& left, const CRational& right);
+
+CRational const operator*(const CRational& left, const CRational& right);
+
+CRational const operator/(const CRational& left, const CRational& right);
+
+bool operator==(const CRational& left, const CRational& right);
+
+bool operator!=(const CRational& left, const CRational& right);
+
+bool operator<(const CRational& left, const CRational& right);
+
+bool operator<=(const CRational& left, const CRational& right);
+
+bool operator>(const CRational& left, const CRational& right);
+
+bool operator>=(const CRational& left, const CRational& right);
+
+std::istream& operator>>(std::istream& stream, CRational& rational);
+
+std::ostream& operator<<(std::ostream& stream, const CRational& rational);

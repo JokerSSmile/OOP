@@ -1,10 +1,10 @@
 #include "stdafx.h"
 #include "CRational.h"
+#include <iostream>
 #include <utility>
 #include <stdexcept>
 
-
-CRational::CRational(int numerator, int denominator)
+CRational::CRational(const int& numerator, const int& denominator)
 	: m_numerator(numerator)
 	, m_denominator(denominator)
 {
@@ -62,66 +62,107 @@ CRational const CRational::operator-() const
 	return CRational(-m_numerator, m_denominator);
 }
 
-CRational const CRational::operator+(const CRational & other) const
+CRational const operator+(const CRational& left, const CRational& right)
 {
-	return CRational(this->GetNumerator() * other.GetDenominator() + other.GetNumerator() * this->GetDenominator(),
-		this->GetDenominator() * other.GetDenominator());
+	return CRational(left.GetNumerator() * right.GetDenominator() + left.GetDenominator() * right.GetNumerator(),
+		left.GetDenominator() * right.GetDenominator());
 }
 
-CRational const CRational::operator-(const CRational & other) const
+CRational const operator-(const CRational& left, const CRational& right)
 {
-	return CRational(this->GetNumerator() * other.GetDenominator() - other.GetNumerator() * this->GetDenominator(),
-		this->GetDenominator() * other.GetDenominator());
+	return CRational(left.GetNumerator() * right.GetDenominator() - right.GetNumerator() * left.GetDenominator(),
+		left.GetDenominator() * right.GetDenominator());
 }
 
 CRational& CRational::operator+=(const CRational& other)
 {
-	this->m_numerator = this->GetNumerator() * other.GetDenominator() + other.GetNumerator() * this->GetDenominator();
-	this->m_denominator = this->GetDenominator() * other.GetDenominator();
+	m_numerator = GetNumerator() * other.GetDenominator() + other.GetNumerator() * GetDenominator();
+	m_denominator = GetDenominator() * other.GetDenominator();
 	Normalize();
 	return *this;
 }
 
 CRational& CRational::operator-=(const CRational& other)
 {
-	this->m_numerator = this->GetNumerator() * other.GetDenominator() - other.GetNumerator() * this->GetDenominator();
-	this->m_denominator = this->GetDenominator() * other.GetDenominator();
+	m_numerator = GetNumerator() * other.GetDenominator() - other.GetNumerator() * GetDenominator();
+	m_denominator = GetDenominator() * other.GetDenominator();
 	Normalize();
 	return *this;
 }
 
-CRational& const CRational::operator*(const CRational& other) const
+CRational const operator*(const CRational& left, const CRational& right)
 {
-	return CRational(this->GetNumerator() * other.GetNumerator(), this->GetDenominator() * other.GetDenominator());
+	return CRational(left.GetNumerator() * right.GetNumerator(), left.GetDenominator() * right.GetDenominator());
 }
 
-CRational& const CRational::operator/(const CRational& other) const
+CRational const operator/(const CRational& left, const CRational& right)
 {
-	return CRational(this->GetNumerator() * other.GetDenominator(), this->GetDenominator() * other.GetNumerator());
+	return CRational(left.GetNumerator() * right.GetDenominator(), left.GetDenominator() * right.GetNumerator());
 }
 
 CRational& CRational::operator*=(const CRational& other)
 {
-	this->m_numerator = this->GetNumerator() * other.GetNumerator();
-	this->m_denominator = this->GetDenominator() * other.GetDenominator();
+	m_numerator = GetNumerator() * other.GetNumerator();
+	m_denominator = GetDenominator() * other.GetDenominator();
 	Normalize();
 	return *this;
 }
 
 CRational& CRational::operator/=(const CRational& other)
 {
-	this->m_numerator = this->GetNumerator() * other.GetDenominator();
-	this->m_denominator = this->GetDenominator() * other.GetNumerator();
+	m_numerator = GetNumerator() * other.GetDenominator();
+	m_denominator = GetDenominator() * other.GetNumerator();
 	Normalize();
 	return *this;
 }
 
-bool CRational::operator==(const CRational & other) const
+std::ostream& operator<<(std::ostream& stream, const CRational& rational)
 {
-	return (this->GetNumerator() == other.GetNumerator()) && (this->GetDenominator() == other.GetDenominator());
+	stream << rational.GetNumerator() << "/" << rational.GetDenominator();
+	return stream;
 }
 
-bool CRational::operator!=(const CRational& other) const
+std::istream& operator>>(std::istream& stream, CRational& rational)
 {
-	return (this->GetNumerator() != other.GetNumerator()) || (this->GetDenominator() != other.GetDenominator());
+	int numerator;
+	int denominator;
+	if ((stream >> numerator) && (stream.get() == '/') && (stream >> denominator))
+	{
+		rational = CRational(numerator, denominator);
+	}
+	else
+	{
+		stream.setstate(std::ios_base::failbit | stream.rdstate());
+	}
+	return stream;
+}
+
+bool operator==(const CRational& left, const CRational& right)
+{
+	return (left.GetNumerator() == right.GetNumerator()) && (left.GetDenominator() == right.GetDenominator());
+}
+
+bool operator!=(const CRational& left, const CRational& right)
+{
+	return (left.GetNumerator() != right.GetNumerator()) || (left.GetDenominator() != right.GetDenominator());
+}
+
+bool operator<(const CRational& left, const CRational& right)
+{
+	return ((left.GetNumerator() * right.GetDenominator()) < (left.GetDenominator() * right.GetNumerator()));
+}
+
+bool operator<=(const CRational& left, const CRational& right)
+{
+	return ((left.GetNumerator() * right.GetDenominator()) <= (left.GetDenominator() * right.GetNumerator()));
+}
+
+bool operator>(const CRational& left, const CRational& right)
+{
+	return ((left.GetNumerator() * right.GetDenominator()) > (left.GetDenominator() * right.GetNumerator()));
+}
+
+bool operator>=(const CRational& left, const CRational& right)
+{
+	return ((left.GetNumerator() * right.GetDenominator()) >= (left.GetDenominator() * right.GetNumerator()));
 }
