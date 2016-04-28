@@ -7,16 +7,17 @@ std::set<int> GeneratePrimeNumbersSet(const int& upperBound)
 	std::vector<bool> isPrimeNumber(upperBound + 1);
 	std::fill(isPrimeNumber.begin(), isPrimeNumber.end(), true);
 
-	size_t currentNumber = 2;
+	size_t startNumber = 2;
 
-	for (size_t currentNumber = 2; currentNumber * currentNumber <= upperBound; currentNumber++)
+	for (size_t currentNumber = startNumber; currentNumber * currentNumber <= upperBound; currentNumber++)
 	{
+		if (currentNumber % 2 == 0 && currentNumber != 2)
+		{
+			continue;
+		}
 		for (size_t i = currentNumber * currentNumber; i <= upperBound; i += currentNumber)
 		{
-			if (isPrimeNumber[i] == true)
-			{
-				isPrimeNumber[i] = false;
-			}
+			isPrimeNumber[i] = false;
 		}
 	}
 
@@ -24,7 +25,7 @@ std::set<int> GeneratePrimeNumbersSet(const int& upperBound)
 	{
 		if (isPrimeNumber[k] == true)
 		{
-			primeNumbers.insert(k);
+			primeNumbers.insert(primeNumbers.end(), k);
 		}
 	}
 
