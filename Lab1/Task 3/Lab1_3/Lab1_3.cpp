@@ -9,38 +9,25 @@ const short MATRIX_SIZE = 3;
 
 using namespace std;
 
-bool IsNumber(const string& str)
-{
-
-	for (size_t i = 0; i < str.size(); i++)
-	{
-		if (isdigit(str[i]) == false && str[i] != '.' && str[i] != '-')
-		{
-			return false;
-		}
-	}
-	return true;
-}
-
-bool ReadStartMatrix(ifstream& file, float matrix[MATRIX_SIZE][MATRIX_SIZE])
+bool ReadStartMatrix(ifstream& file, double matrix[MATRIX_SIZE][MATRIX_SIZE])
 {
 	string line;
+
 	size_t row = 0;
 	size_t column;
 	string currentNumber;
-	
 	while (getline(file, line))
 	{
 		istringstream myStream(line);
 		column = 0;
 		while (myStream >> currentNumber)
 		{
-			if (IsNumber(currentNumber))
+			try
 			{
-				matrix[row][column] = stof(currentNumber);
+				matrix[row][column] = stod(currentNumber);
 				column++;
 			}
-			else
+			catch (const std::exception&)
 			{
 				return false;
 			}
@@ -50,21 +37,21 @@ bool ReadStartMatrix(ifstream& file, float matrix[MATRIX_SIZE][MATRIX_SIZE])
 	return true;
 }
 
-float CalculateMatrixDeterminant(float matrix[MATRIX_SIZE][MATRIX_SIZE])
+double CalculateMatrixDeterminant(double matrix[MATRIX_SIZE][MATRIX_SIZE])
 {
-	float firstDiagonalPlus = { matrix[0][0] * matrix[1][1] * matrix[2][2] };
-	float firstDiagonalMinus = { matrix[0][2] * matrix[1][1] * matrix[2][0] };
-	float secondDiagonalPlus = { matrix[0][1] * matrix[1][2] * matrix[2][0] };
-	float secondDiagonalMinus = { matrix[0][1] * matrix[1][0] * matrix[2][2] };
-	float thirdDiagonalPlus = { matrix[0][2] * matrix[1][0] * matrix[2][1] };
-	float thirdDiagonalMinus = { matrix[0][0] * matrix[1][2] * matrix[2][1] };
+	double firstDiagonalPlus = { matrix[0][0] * matrix[1][1] * matrix[2][2] };
+	double firstDiagonalMinus = { matrix[0][2] * matrix[1][1] * matrix[2][0] };
+	double secondDiagonalPlus = { matrix[0][1] * matrix[1][2] * matrix[2][0] };
+	double secondDiagonalMinus = { matrix[0][1] * matrix[1][0] * matrix[2][2] };
+	double thirdDiagonalPlus = { matrix[0][2] * matrix[1][0] * matrix[2][1] };
+	double thirdDiagonalMinus = { matrix[0][0] * matrix[1][2] * matrix[2][1] };
 
 	return firstDiagonalPlus + secondDiagonalPlus + thirdDiagonalPlus - firstDiagonalMinus - secondDiagonalMinus - thirdDiagonalMinus;
 }
 
-float CalculateMatrixAdditions(const int& col, const int& row, float matrix[3][3])
+double CalculateMatrixAdditions(const int& col, const int& row, double matrix[3][3])
 {
-	vector<float> matrixElementsExcludingElementsOnColumnAndRow;
+	vector<double> matrixElementsExcludingElementsOnColumnAndRow;
 
 	for (size_t i = 0; i < MATRIX_SIZE; i++)
 	{
@@ -77,10 +64,10 @@ float CalculateMatrixAdditions(const int& col, const int& row, float matrix[3][3
 		}
 	}
 
-	return static_cast<float> (pow(-1, (col + 1) + (row + 1))*(matrixElementsExcludingElementsOnColumnAndRow[0] * matrixElementsExcludingElementsOnColumnAndRow[3] - matrixElementsExcludingElementsOnColumnAndRow[1] * matrixElementsExcludingElementsOnColumnAndRow[2]));
+	return (pow(-1, (col + 1) + (row + 1))*(matrixElementsExcludingElementsOnColumnAndRow[0] * matrixElementsExcludingElementsOnColumnAndRow[3] - matrixElementsExcludingElementsOnColumnAndRow[1] * matrixElementsExcludingElementsOnColumnAndRow[2]));
 }
 
-void CalculateInverseMatrix(float inverseMatrix[MATRIX_SIZE][MATRIX_SIZE], float unionMatrix[MATRIX_SIZE][MATRIX_SIZE], const float& determinant)
+void CalculateInverseMatrix(double inverseMatrix[MATRIX_SIZE][MATRIX_SIZE], double unionMatrix[MATRIX_SIZE][MATRIX_SIZE], const double& determinant)
 {
 	for (size_t i = 0; i < MATRIX_SIZE; i++)
 	{
@@ -91,48 +78,27 @@ void CalculateInverseMatrix(float inverseMatrix[MATRIX_SIZE][MATRIX_SIZE], float
 	}
 }
 
-bool OutputResulMatrix(float matrix[MATRIX_SIZE][MATRIX_SIZE])
+void OutputResulMatrix(double matrix[MATRIX_SIZE][MATRIX_SIZE])
 {
+	ostringstream outStream;
 	ofstream fout("output.txt");
-	if (!fout.is_open)
-	{
-		return false;
-	}
 	cout << "Inversed matrix" << endl;
 	for (size_t i = 0; i < MATRIX_SIZE; i++)
 	{
 		for (size_t k = 0; k < MATRIX_SIZE; k++)
 		{
-			fout << std::setprecision(3) << std::fixed << matrix[i][k] << "\t";
-			cout << std::setprecision(3) << std::fixed << matrix[i][k] << "\t";
+			outStream << std::setprecision(3) << std::fixed << matrix[i][k] << "\t";
 		}
-		fout << endl;
-		cout << endl;
+		outStream << endl;
+
 	}
-	
-	return true;
 }
 
-bool CalculateAndOutputResult(string& inputFileName)
+bool CalculateRoots(double givenMatrix[MATRIX_SIZE][MATRIX_SIZE], double inverseMatrix[MATRIX_SIZE][MATRIX_SIZE])
 {
-	ifstream fin(inputFileName);
-	if (!fin.is_open())
-	{
-		cout << "Error while opening file" << endl;
-		return false;
-	}
+	double unionMatrix[MATRIX_SIZE][MATRIX_SIZE];
 
-	float givenMatrix[MATRIX_SIZE][MATRIX_SIZE];
-	float unionMatrix[MATRIX_SIZE][MATRIX_SIZE];
-	float inverseMatrix[MATRIX_SIZE][MATRIX_SIZE];
-
-	if (!ReadStartMatrix(fin, givenMatrix))
-	{
-		cout << "Incorrect input" << endl;
-		return false;
-	}
-
-	float determinant = CalculateMatrixDeterminant(givenMatrix);
+	double determinant = CalculateMatrixDeterminant(givenMatrix);
 	if (determinant == 0)
 	{
 		cout << "Inverse martix does not exist. Determinant of the given matrix is 0" << endl;
@@ -148,11 +114,31 @@ bool CalculateAndOutputResult(string& inputFileName)
 	}
 
 	CalculateInverseMatrix(inverseMatrix, unionMatrix, determinant);
-	
-	if (!OutputResulMatrix(inverseMatrix))
+
+	return true;
+}
+
+bool CalculateAndOutputResult(string& inputFileName)
+{
+	ifstream fin(inputFileName);
+	if (fin.is_open() == false)
 	{
+		cout << "Error while opening file" << endl;
 		return false;
 	}
+
+	double givenMatrix[MATRIX_SIZE][MATRIX_SIZE];
+	double inverseMatrix[MATRIX_SIZE][MATRIX_SIZE];
+
+	if (!ReadStartMatrix(fin, givenMatrix))
+	{
+		cout << "Incorrect input" << endl;
+		return false;
+	}
+
+	CalculateRoots(givenMatrix, inverseMatrix);
+	
+	OutputResulMatrix(inverseMatrix);
 
 	return true;
 }
@@ -160,7 +146,6 @@ bool CalculateAndOutputResult(string& inputFileName)
 int main(int argc, char* argv[])
 {
 	cout << "This program inserts given matrix\n" << endl;
-	cout << argc << endl;
 	if (argc == 2)
 	{
 		if (!CalculateAndOutputResult(string(argv[1])))
