@@ -1,8 +1,8 @@
-птица:bird
-кошка:cat
-кот:cat
-собака:dog
-дом:house
-новый:new
-старый:old
-тест:test
+ptica:bird
+koshka:cat
+kot:cat
+pes:dog
+dom:house
+noviy:new
+stariy:old
+test:test

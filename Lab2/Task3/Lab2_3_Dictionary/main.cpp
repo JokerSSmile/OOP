@@ -9,11 +9,15 @@ int main(int argc, char* argv[])
 
 	if (argc != 2)
 	{
-		cout << "Input must be Lab2_3_Dictionary.exe <inputFile.txt>" << endl;
-		return 1;
+		//cout << "Input must be Lab2_3_Dictionary.exe <inputFile.txt>" << endl;
+		//return 1;
 	}
 
-	string fileName = argv[1];
+	cout << "Input English word and if it is already exists in dictionary you will get translation,/n" <<
+		"else you can save translation by yourself./n"<< endl;
+	cout << "At the end you can save changed dictionary" << endl;
+
+	string fileName = "input.txt";//argv[1];
 
 	std::multimap<string, string> newDictionary;
 	try
@@ -23,10 +27,10 @@ int main(int argc, char* argv[])
 		WorkWithUser(newDictionary);
 		if (startDictionarySize != newDictionary.size())
 		{
-			TryToSaveNewDictionary(fileName, newDictionary);
+			AskUserToSaveNewDictionary(fileName, newDictionary);
 		}
 	}
-	catch (const std::invalid_argument &error)
+	catch (const std::exception &error)
 	{
 		cout << error.what() << endl;
 		return 1;
