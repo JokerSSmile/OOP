@@ -15,36 +15,36 @@ CRectangle::CRectangle()
 
 CRectangle::CRectangle(const int& left, const int& top, const int& width, const int& height)
 {
-	this->m_left = left;
-	this->m_top = top;
+	SetLeft(left);
+	SetTop(top);
 	if (width > 0)
 	{
-		this->m_width = width;
+		SetWidth(width);
 	}
 	else
 	{
-		this->m_width = 0;
+		SetWidth(0);
 	}
 	if (height > 0)
 	{
-		this->m_height = height;
+		SetHeight(height);
 	}
 	else
 	{
-		this->m_height = 0;
+		SetHeight(0);
 	}
 }
 
 void CRectangle::Move(const int& dx, const int& dy)
 {
-	m_left += dx;
-	m_top += dy;
+	SetLeft(GetLeft() + dx);
+	SetTop(GetTop() + dy);
 }
 
 void CRectangle::Scale(const int& sx, const int& sy)
 {
-	m_width *= sx;
-	m_height *= sy;
+	SetWidth(GetWidth() * sx);
+	SetHeight(GetHeight() * sy);
 }
 
 bool CRectangle::Intersects(const CRectangle& other)
@@ -52,10 +52,10 @@ bool CRectangle::Intersects(const CRectangle& other)
 	if (this->m_left < other.GetRight() && this->GetRight() > other.GetLeft() && this->m_top < other.GetBottom() && this->GetBottom() > other.GetTop())
 	{
 		CRectangle intersectRect;
-		intersectRect.m_left = std::max(this->m_left, other.m_left);
-		intersectRect.m_top = std::max(this->m_top, other.m_top);
-		intersectRect.m_height = abs(std::min(this->GetBottom(), other.GetBottom()) - intersectRect.m_top);
-		intersectRect.m_width = abs(std::min(this->GetRight(), other.GetRight()) - intersectRect.m_left);
+		intersectRect.SetLeft(std::max(this->GetLeft(), other.GetLeft()));
+		intersectRect.SetTop(std::max(this->GetTop(), other.GetTop()));
+		intersectRect.SetHeight(abs(std::min(this->GetBottom(), other.GetBottom()) - intersectRect.GetTop()));
+		intersectRect.SetWidth(abs(std::min(this->GetRight(), other.GetRight()) - intersectRect.GetLeft()));
 		*this = intersectRect;
 		return true;
 	}
@@ -64,22 +64,22 @@ bool CRectangle::Intersects(const CRectangle& other)
 
 unsigned CRectangle::GetPerimeter() const
 {
-	return (m_width + m_height) * 2;
+	return (GetWidth() + GetHeight()) * 2;
 }
 
 unsigned CRectangle::GetArea() const
 {
-	return m_width * m_height;
+	return GetWidth() * GetHeight();
 }
 
 int CRectangle::GetRight() const
 {
-	return m_left + m_width;
+	return GetLeft() + GetWidth();
 }
 
 int CRectangle::GetBottom() const
 {
-	return m_top + m_height;
+	return GetTop() + GetHeight();
 }
 
 int CRectangle::GetWidth() const
@@ -90,6 +90,26 @@ int CRectangle::GetWidth() const
 int CRectangle::GetHeight() const
 {
 	return m_height;
+}
+
+void CRectangle::SetWidth(const int & width)
+{
+	m_width = width;
+}
+
+void CRectangle::SetHeight(const int & height)
+{
+	m_height = height;
+}
+
+void CRectangle::SetTop(const int & top)
+{
+	m_top = top;
+}
+
+void CRectangle::SetLeft(const int & left)
+{
+	m_left = left;
 }
 
 int CRectangle::GetLeft() const
