@@ -4,9 +4,9 @@
 
 int main()
 {
-	CRational rational;
-	std::cin >> rational;
-	std::cout << rational << std::endl;
+	//CRational rational(8, 3);
+	//std::cin >> rational;
+	//std::cout << rational << std::endl;
     return 0;
 }
 

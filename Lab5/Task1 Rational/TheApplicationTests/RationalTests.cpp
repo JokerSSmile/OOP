@@ -5,7 +5,7 @@
 
 using namespace std;
 
-void VerifyRational(const CRational & r, int expectedNumerator, int expectedDenominator)
+void VerifyRational(const CRational & r, const int& expectedNumerator, const int& expectedDenominator)
 {
 	BOOST_CHECK_EQUAL(r.GetNumerator(), expectedNumerator);
 	BOOST_CHECK_EQUAL(r.GetDenominator(), expectedDenominator);
@@ -295,6 +295,22 @@ BOOST_AUTO_TEST_CASE(less_eq_works_correct_if_int_and_rational)
 {
 	CRational rational1 = CRational(6, 3);
 	BOOST_CHECK(2 <= rational1);
+}
+
+BOOST_AUTO_TEST_CASE(input_operator_works_correct)
+{
+	CRational rational;
+	std::istringstream strm("6/3");
+	strm >> rational;
+	VerifyRational(rational, 2, 1);
+}
+
+BOOST_AUTO_TEST_CASE(output_operator_works_correct)
+{
+	CRational rational(4, 3);
+	std::ostringstream strm;
+	strm << rational;
+	BOOST_CHECK_EQUAL(strm.str(), "4/3");
 }
 
 BOOST_AUTO_TEST_SUITE_END()

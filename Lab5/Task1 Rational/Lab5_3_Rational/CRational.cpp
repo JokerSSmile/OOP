@@ -49,7 +49,7 @@ unsigned GCD(unsigned a, unsigned b)
 
 double CRational::ToDouble() const
 {
-	return (double)m_numerator / m_denominator;
+	return (double)GetNumerator() / GetDenominator();
 }
 
 CRational const CRational::operator+() const
@@ -59,7 +59,7 @@ CRational const CRational::operator+() const
 
 CRational const CRational::operator-() const
 {
-	return CRational(-m_numerator, m_denominator);
+	return CRational(-GetNumerator(), GetDenominator());
 }
 
 CRational const operator+(const CRational& left, const CRational& right)
@@ -116,6 +116,14 @@ CRational& CRational::operator/=(const CRational& other)
 	return *this;
 }
 
+std::pair<int, CRational> CRational::ToCompoundFraction() const
+{
+	int integerPart = GetNumerator() / GetDenominator();
+	CRational rationalPart = CRational(GetNumerator() - integerPart * GetDenominator(), GetDenominator());
+	
+	return std::pair<int, CRational>(integerPart, rationalPart);
+}
+
 std::ostream& operator<<(std::ostream& stream, const CRational& rational)
 {
 	stream << rational.GetNumerator() << "/" << rational.GetDenominator();
@@ -137,32 +145,33 @@ std::istream& operator>>(std::istream& stream, CRational& rational)
 	return stream;
 }
 
-bool operator==(const CRational& left, const CRational& right)
+bool const operator==(const CRational& left, const CRational& right)
 {
 	return (left.GetNumerator() == right.GetNumerator()) && (left.GetDenominator() == right.GetDenominator());
 }
 
-bool operator!=(const CRational& left, const CRational& right)
+bool const operator!=(const CRational& left, const CRational& right)
 {
 	return (left.GetNumerator() != right.GetNumerator()) || (left.GetDenominator() != right.GetDenominator());
 }
 
-bool operator<(const CRational& left, const CRational& right)
+bool const operator<(const CRational& left, const CRational& right)
 {
 	return ((left.GetNumerator() * right.GetDenominator()) < (left.GetDenominator() * right.GetNumerator()));
 }
 
-bool operator<=(const CRational& left, const CRational& right)
+bool const operator<=(const CRational& left, const CRational& right)
 {
 	return ((left.GetNumerator() * right.GetDenominator()) <= (left.GetDenominator() * right.GetNumerator()));
 }
 
-bool operator>(const CRational& left, const CRational& right)
+bool const operator>(const CRational& left, const CRational& right)
 {
 	return ((left.GetNumerator() * right.GetDenominator()) > (left.GetDenominator() * right.GetNumerator()));
 }
 
-bool operator>=(const CRational& left, const CRational& right)
+bool const operator>=(const CRational& left, const CRational& right)
 {
 	return ((left.GetNumerator() * right.GetDenominator()) >= (left.GetDenominator() * right.GetNumerator()));
 }
+

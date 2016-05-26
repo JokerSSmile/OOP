@@ -23,6 +23,8 @@ public:
 
 	CRational& operator/=(const CRational& other);
 
+	std::pair<int, CRational> ToCompoundFraction() const;
+
 private:
 	int m_numerator;
 	int m_denominator;
@@ -42,17 +44,17 @@ CRational const operator*(const CRational& left, const CRational& right);
 
 CRational const operator/(const CRational& left, const CRational& right);
 
-bool operator==(const CRational& left, const CRational& right);
+bool const operator==(const CRational& left, const CRational& right);
 
-bool operator!=(const CRational& left, const CRational& right);
+bool const operator!=(const CRational& left, const CRational& right);
 
-bool operator<(const CRational& left, const CRational& right);
+bool const operator<(const CRational& left, const CRational& right);
 
-bool operator<=(const CRational& left, const CRational& right);
+bool const operator<=(const CRational& left, const CRational& right);
 
-bool operator>(const CRational& left, const CRational& right);
+bool const operator>(const CRational& left, const CRational& right);
 
-bool operator>=(const CRational& left, const CRational& right);
+bool const operator>=(const CRational& left, const CRational& right);
 
 std::istream& operator>>(std::istream& stream, CRational& rational);
 
