@@ -69,7 +69,7 @@ void CreateCircle(const std::vector<std::string>& command, std::vector<std::shar
 			throw std::exception("");
 		}
 		figures.push_back(std::make_shared<CCircle>(x, y, radius, command[4], command[5]));
-		std::shared_ptr<sf::Shape> circle = std::make_shared<sf::CircleShape>(int(radius));
+		std::shared_ptr<sf::Shape> circle = std::make_shared<sf::CircleShape>((float)radius);
 		circle->setOrigin(sf::Vector2f(float(radius), float(radius)));
 		circle->setPosition(float(x), float(y));
 		circle->setOutlineThickness(3);
@@ -150,7 +150,7 @@ void CreatePoint(const std::vector<std::string>& command, std::vector<std::share
 		double x = stod(command[1]);
 		double y = stod(command[2]);
 		figures.push_back(std::make_shared<CPoint>(x, y, command[3]));
-		std::shared_ptr<sf::Shape> point = std::make_shared<sf::CircleShape>(2);
+		std::shared_ptr<sf::Shape> point = std::make_shared<sf::CircleShape>(2.f);
 		point->setPosition(float(x), float(y));
 		point->setFillColor(HexToRgb(command[3]));
 		drawableFigures.push_back(point);

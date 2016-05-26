@@ -28,12 +28,13 @@ void DrawShapes(const std::vector<std::shared_ptr<sf::Shape>>& drawableShapes)
 
 int main()
 {
+	std::cout << "Input commands" << std::endl;
+
 	std::vector<std::vector<std::string>> inputData = GetInputData();
 	std::vector<std::shared_ptr<CShape>> figures;
 	std::vector<std::shared_ptr<sf::Shape>> drawableShapes;
 
 	ParseCommands(inputData, figures, drawableShapes);
-	std::cout << "______" << std::endl;
 
 	OutputInfoAboutShapes(figures);
 

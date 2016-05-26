@@ -2,6 +2,7 @@
 
 BOOST_AUTO_TEST_SUITE(color_tests)
 
+
 BOOST_AUTO_TEST_CASE(color_hex_to_rgb_is_correct)
 {
 	sf::Color color1 = HexToRgb("#c0cfbc");
@@ -22,13 +23,14 @@ BOOST_AUTO_TEST_CASE(color_hex_to_rgb_is_correct)
 
 BOOST_AUTO_TEST_SUITE_END()
 
+
 struct PointFixture
 {
 	CPoint point;
 	PointFixture()
 		:point(10, 20, "#ff00ff")
 	{ }
-	std::vector<std::shared_ptr<IShape>> figures;
+	std::vector<std::shared_ptr<CShape>> figures;
 	std::vector<std::shared_ptr<sf::Shape>> drawableFigures;
 };
 
@@ -61,7 +63,7 @@ BOOST_AUTO_TEST_CASE(can_not_create_if_incorrect_command)
 
 BOOST_AUTO_TEST_SUITE_END()
 
-
+/*
 
 struct CircleFixture
 {
@@ -69,7 +71,7 @@ struct CircleFixture
 	CircleFixture()
 		:circle(10, 20, 5, "#ff00ff", "#00ff00")
 	{ }
-	std::vector<std::shared_ptr<IShape>> figures;
+	std::vector<std::shared_ptr<CShape>> figures;
 	std::vector<std::shared_ptr<sf::Shape>> drawableFigures;
 };
 
@@ -111,7 +113,7 @@ struct LineTests
 	LineTests()
 		:line(10, 20, 5, 32, "#ff00ff")
 	{ }
-	std::vector<std::shared_ptr<IShape>> figures;
+	std::vector<std::shared_ptr<CShape>> figures;
 	std::vector<std::shared_ptr<sf::Shape>> drawableFigures;
 };
 
@@ -150,7 +152,7 @@ struct RectTests
 	RectTests()
 		:rect(10, 20, 40, 30, "#ff00ff", "#56cf32")
 	{ }
-	std::vector<std::shared_ptr<IShape>> figures;
+	std::vector<std::shared_ptr<CShape>> figures;
 	std::vector<std::shared_ptr<sf::Shape>> drawableFigures;
 };
 
@@ -192,7 +194,7 @@ struct TriangleTests
 	TriangleTests()
 		:triangle(10, 20, 40, 30, 25, 35, "#ff00f0", "#56cf34")
 	{ }
-	std::vector<std::shared_ptr<IShape>> figures;
+	std::vector<std::shared_ptr<CShape>> figures;
 	std::vector<std::shared_ptr<sf::Shape>> drawableFigures;
 };
 
@@ -225,3 +227,5 @@ BOOST_AUTO_TEST_CASE(can_not_create_if_incorrect_command)
 }
 
 BOOST_AUTO_TEST_SUITE_END()
+
+*/

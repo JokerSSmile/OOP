@@ -13,11 +13,11 @@
 #include <vector>
 #include <string>
 #include <iostream>
-#include <cmath>
+//#include <cmath>
 
 #include <SFML/Graphics.hpp>
-#include <boost/lexical_cast.hpp>
-#include <boost/algorithm/string/replace.hpp>
+//#include <boost/lexical_cast.hpp>
+//#include <boost/algorithm/string/replace.hpp>
 
 #include "../Lab4_v2/CCircle.h"
 #include "../Lab4_v2/CLineSegment.h"
@@ -33,5 +33,6 @@
 #define BOOST_TEST_INCLUDED
 #pragma warning (disable: 4702)
 #include <boost/test/unit_test.hpp>
+
 
 // TODO: Установите здесь ссылки на дополнительные заголовки, требующиеся для программы

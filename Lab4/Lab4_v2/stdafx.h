@@ -15,8 +15,8 @@
 #include <iostream>
 #include <cmath>
 
-#include <SFML/Graphics.hpp>
 #include <boost/lexical_cast.hpp>
+#include <SFML/Graphics.hpp>
 
 #include "CCircle.h"
 #include "CLineSegment.h"
