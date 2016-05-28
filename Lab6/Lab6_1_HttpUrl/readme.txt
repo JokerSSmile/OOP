@@ -1,0 +1,1 @@
+Class that checks is url correct
