@@ -154,11 +154,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\HttpUrl\CHttpUrl.h" />
+    <ClInclude Include="..\HttpUrl\CUrlParsingError.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\HttpUrl\CHttpUrl.cpp" />
+    <ClCompile Include="..\HttpUrl\CUrlParsingError.cpp" />
     <ClCompile Include="ApplicationTests.cpp" />
     <ClCompile Include="HttpUrlTests.cpp" />
     <ClCompile Include="stdafx.cpp">

@@ -11,7 +11,11 @@ int main()
 {
 	try
 	{
-		CHttpUrl("kek.", "/adsfasdf", Protocol(HTTPS), 25);
+		CHttpUrl url("google.ru", "doc", HTTPS, 443);
+		cout << url.GetProtocol() << endl;
+		cout << url.GetDomain() << endl;
+		cout << url.GetPort() << endl;
+		cout << url.GetDocument() << endl;
 	}
 	catch (const std::exception& err)
 	{

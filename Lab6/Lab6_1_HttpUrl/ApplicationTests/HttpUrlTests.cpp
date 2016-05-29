@@ -1,6 +1,87 @@
 #include "stdafx.h"
 #include "../HttpUrl/CHttpUrl.h"
 
-BOOST_AUTO_TEST_SUITE()
+#include <iostream>
+
+void VerifyGivenUrl(const CHttpUrl& url, const std::string& domain, const std::string& document, const Protocol& protocol, const unsigned short& port)
+{
+	BOOST_CHECK(url.GetDocument() == document);
+	BOOST_CHECK(url.GetDomain() == domain);
+	BOOST_CHECK(url.GetPort() == port);
+	BOOST_CHECK(url.GetProtocol() == protocol);
+}
+
+BOOST_AUTO_TEST_SUITE(url_tests)
+
+	BOOST_AUTO_TEST_SUITE(throws_exception)
+
+		BOOST_AUTO_TEST_CASE(if_incorrect_protocol)
+		{
+			BOOST_REQUIRE_THROW(CHttpUrl url("httk://google.ru"), CUrlParsingError);
+		}
+		BOOST_AUTO_TEST_CASE(if_incorrect_protocol_delimeter)
+		{
+			BOOST_REQUIRE_THROW(CHttpUrl url("http:/google.ru"), CUrlParsingError);
+		}
+
+		BOOST_AUTO_TEST_SUITE(if_incorrect_domain)
+
+			BOOST_AUTO_TEST_CASE(name_with_spaces)
+			{
+				BOOST_REQUIRE_THROW(CHttpUrl url("http://g oogle.ru"), CUrlParsingError);
+			}
+			BOOST_AUTO_TEST_CASE(name_with_incorrect_symbols)
+			{
+				BOOST_REQUIRE_THROW(CHttpUrl url("http://goo&gle.ru"), CUrlParsingError);
+			}
+			BOOST_AUTO_TEST_CASE(name_declatration_missing)
+			{
+				BOOST_REQUIRE_THROW(CHttpUrl url("http://.ru"), CUrlParsingError);
+			}
+			BOOST_AUTO_TEST_CASE(type_declaration_is_missing)
+			{
+				BOOST_REQUIRE_THROW(CHttpUrl url("http://google"), CUrlParsingError);
+			}
+			BOOST_AUTO_TEST_CASE(type_with_incorrect_symbols)
+			{
+				BOOST_REQUIRE_THROW(CHttpUrl url("http://google.ru_"), CUrlParsingError);
+			}
+
+		BOOST_AUTO_TEST_SUITE_END()
+
+		BOOST_AUTO_TEST_CASE(if_missing_port)
+		{
+			BOOST_REQUIRE_THROW(CHttpUrl url("http:/google.ru:/"), CUrlParsingError);
+		}
+		BOOST_AUTO_TEST_CASE(if_incorrect_port)
+		{
+			BOOST_REQUIRE_THROW(CHttpUrl url("http:/google.ru:84g5/"), CUrlParsingError);
+		}
+		BOOST_AUTO_TEST_CASE(if_incorrect_document)
+		{
+			BOOST_REQUIRE_THROW(CHttpUrl url("http:/google.ru/ lk"), CUrlParsingError);
+		}
+
+	BOOST_AUTO_TEST_SUITE_END()
+
+	BOOST_AUTO_TEST_SUITE(correct_data_filling)
+
+		BOOST_AUTO_TEST_CASE(if_initialize_from_string)
+		{
+			CHttpUrl url("http://google.ru/docs/sdj");
+			VerifyGivenUrl(url, "google.ru", "/docs/sdj", HTTP, 80);
+		}
+		BOOST_AUTO_TEST_CASE(if_initialize_from_not_full_data)
+		{
+			CHttpUrl url("google.ru", "/doc");
+			VerifyGivenUrl(url, "google.ru", "/doc", HTTP, 80);
+		}
+		BOOST_AUTO_TEST_CASE(if_initialize_from_full_data)
+		{
+			CHttpUrl url("google.ru", "doc", HTTPS, 45);
+			VerifyGivenUrl(url, "google.ru", "/doc", HTTPS, 45);
+		}
+
+	BOOST_AUTO_TEST_SUITE_END()
 
 BOOST_AUTO_TEST_SUITE_END()

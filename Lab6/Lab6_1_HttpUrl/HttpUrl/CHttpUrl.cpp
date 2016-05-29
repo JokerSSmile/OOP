@@ -15,14 +15,14 @@ CHttpUrl::CHttpUrl(const std::string & url)
 CHttpUrl::CHttpUrl(const std::string& domain, const std::string& document, Protocol protocol, unsigned short port)
 {
 	m_protocol = protocol == HTTP ? HTTP : HTTPS;
-	VerifyDomain(domain);
 	VerifyPort(port);
+	VerifyDomain(domain);
 	VerifyDocument(document);
 }
 
 std::string CHttpUrl::GetURL() const
 {
-	return std::string();
+	return GetDomain() + GetDocument();
 }
 
 std::string CHttpUrl::GetDomain() const
@@ -32,7 +32,7 @@ std::string CHttpUrl::GetDomain() const
 
 std::string CHttpUrl::GetDocument() const
 {
-	return std::string();
+	return m_document;
 }
 
 Protocol CHttpUrl::GetProtocol() const
@@ -87,6 +87,11 @@ void CHttpUrl::VerifyDomain(const std::string & domain)
 	}
 	
 	size_t delimeterPos = domain.find('.');
+	if (delimeterPos == std::string::npos)
+	{
+		throw CUrlParsingError("Error: missing domain type declaration");
+	}
+	
 	std::string domainName = domain.substr(0, delimeterPos);
 	std::string domainType = domain.substr(delimeterPos + 1, domain.size());
 	
@@ -153,6 +158,7 @@ unsigned short CHttpUrl::ParseUrlForPort(const std::string & url)
 	}
 	else
 	{
+		containsPort += '/';
 		size_t documentStartPos = containsPort.find('/');
 
 		std::string portStr = containsPort.substr(portDelimeterPos + 1, documentStartPos - portDelimeterPos);
@@ -179,7 +185,7 @@ std::string CHttpUrl::ParseUrlForDocument(const std::string & url)
 	std::string urlWithDocument = url.substr(8, url.size());
 	size_t documentStartPos = urlWithDocument.find('/');
 
-	return urlWithDocument.substr(documentStartPos,  urlWithDocument.size());
+	return urlWithDocument.substr(documentStartPos,  urlWithDocument.size() - 8);
 }
 
 void CHttpUrl::VerifyDocument(const std::string & document)
@@ -188,13 +194,12 @@ void CHttpUrl::VerifyDocument(const std::string & document)
 
 	if (doc[0] != '/')
 	{
-		doc.append("/");
+		doc.insert(doc.begin(), '/');
 	}
 
 	if (doc.find_first_not_of(' ') == std::string::npos)
 	{
 		throw CUrlParsingError("Error: invalid symbol in document");
 	}
-
 	m_document = doc;
 }
