@@ -67,6 +67,11 @@ void OperateWithCommands(const vector<vector<string>>& commands, CCalculator& ca
 	{
 		try
 		{
+			if (command.size() == 0)
+			{
+				continue;
+			}
+			
 			cout << "> Processing: ";
 			std::copy(command.begin(), command.end(), std::ostream_iterator<string>(std::cout, " "));
 			cout << endl;
