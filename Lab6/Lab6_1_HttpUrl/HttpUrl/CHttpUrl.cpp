@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include <algorithm>
+#include <boost/lexical_cast.hpp>
 
 using std::cout;
 using std::endl;
@@ -13,16 +14,25 @@ CHttpUrl::CHttpUrl(const std::string & url)
 }
 
 CHttpUrl::CHttpUrl(const std::string& domain, const std::string& document, Protocol protocol, unsigned short port)
+	:m_protocol(protocol),
+	m_port(ApplyPort(port)),
+	m_domain(VerifyAndApplyDomain(domain)),
+	m_document(VerifyAndApplyDocument(document))
 {
-	m_protocol = protocol == HTTP ? HTTP : HTTPS;
-	VerifyPort(port);
-	VerifyDomain(domain);
-	VerifyDocument(document);
+
 }
 
 std::string CHttpUrl::GetURL() const
 {
-	return GetDomain() + GetDocument();
+	std::string url;
+	GetProtocol() == HTTP ? url += "http://" : url += "https://";
+	url += m_domain;
+	if (GetPort() != 80 && GetPort() != 443)
+	{
+		url += ":" + std::to_string(GetPort());
+	}
+	url += GetDocument();
+	return url;
 }
 
 std::string CHttpUrl::GetDomain() const
@@ -48,13 +58,12 @@ unsigned short CHttpUrl::GetPort() const
 void CHttpUrl::ParseUrl(const std::string & url)
 {
 	std::string protocol = ParseUrlForProtocol(url);
-	VerifyProtocol(protocol);
+	m_protocol = VerifyAndApplyProtocol(protocol);
 	std::string domain = ParseUrlForDomain(url);
-	VerifyDomain(domain);
-	unsigned short port = ParseUrlForPort(url);
-	VerifyPort(port);
+	m_domain = VerifyAndApplyDomain(domain);
+	m_port = ParseUrlForPort(url);
 	std::string document = ParseUrlForDocument(url);
-	VerifyDocument(document);
+	m_document = VerifyAndApplyDocument(document);
 	
 }
 
@@ -79,8 +88,9 @@ std::string CHttpUrl::ParseUrlForDomain(const std::string & url)
 	return domain;
 }
 
-void CHttpUrl::VerifyDomain(const std::string & domain)
+std::string CHttpUrl::VerifyAndApplyDomain(const std::string & domain)
 {
+	
 	if (domain.size() == 0)
 	{
 		throw CUrlParsingError("Error: missing domain in url");
@@ -91,7 +101,7 @@ void CHttpUrl::VerifyDomain(const std::string & domain)
 	{
 		throw CUrlParsingError("Error: missing domain type declaration");
 	}
-	
+
 	std::string domainName = domain.substr(0, delimeterPos);
 	std::string domainType = domain.substr(delimeterPos + 1, domain.size());
 	
@@ -105,7 +115,7 @@ void CHttpUrl::VerifyDomain(const std::string & domain)
 		throw CUrlParsingError("Error: invalid symbol in domain type");
 	}
 
-	m_domain = domain;
+	return domain;
 }
 
 std::string CHttpUrl::ParseUrlForProtocol(const std::string & url)
@@ -120,17 +130,15 @@ std::string CHttpUrl::ParseUrlForProtocol(const std::string & url)
 	return url.substr(0, delimeterPos);
 }
 
-void CHttpUrl::VerifyProtocol(const std::string & protocol)
+Protocol CHttpUrl::VerifyAndApplyProtocol(const std::string & protocol)
 {
 	if (protocol == "http")
 	{
-		m_protocol = HTTP;
-		return;
+		return HTTP;
 	}
 	else if (protocol == "https")
 	{
-		m_protocol = HTTPS;
-		return;
+		return HTTPS;
 	}
 
 	throw CUrlParsingError("Error: invalid protocol type");
@@ -161,12 +169,12 @@ unsigned short CHttpUrl::ParseUrlForPort(const std::string & url)
 		containsPort += '/';
 		size_t documentStartPos = containsPort.find('/');
 
-		std::string portStr = containsPort.substr(portDelimeterPos + 1, documentStartPos - portDelimeterPos);
+		std::string portStr = containsPort.substr(portDelimeterPos + 1, documentStartPos - portDelimeterPos - 1);
 		try
 		{
-			port = std::stoi(portStr);
+			port = boost::lexical_cast<int>(portStr);
 		}
-		catch (const std::invalid_argument&)
+		catch (const boost::bad_lexical_cast&)
 		{
 			throw CUrlParsingError("Error: invalid port");
 		}
@@ -175,20 +183,28 @@ unsigned short CHttpUrl::ParseUrlForPort(const std::string & url)
 	return port;
 }
 
-void CHttpUrl::VerifyPort(const unsigned short & port)
+unsigned short CHttpUrl::ApplyPort(unsigned short port)
 {
 	m_port = port;
+
+	return port;
 }
 
 std::string CHttpUrl::ParseUrlForDocument(const std::string & url)
 {
 	std::string urlWithDocument = url.substr(8, url.size());
+
+	if (urlWithDocument.back() != '/')
+	{
+		urlWithDocument += "/";
+	}
+
 	size_t documentStartPos = urlWithDocument.find('/');
 
 	return urlWithDocument.substr(documentStartPos,  urlWithDocument.size() - 8);
 }
 
-void CHttpUrl::VerifyDocument(const std::string & document)
+std::string CHttpUrl::VerifyAndApplyDocument(const std::string & document)
 {
 	std::string doc = document;
 
@@ -197,9 +213,10 @@ void CHttpUrl::VerifyDocument(const std::string & document)
 		doc.insert(doc.begin(), '/');
 	}
 
-	if (doc.find_first_not_of(' ') == std::string::npos)
+	if (doc.find_first_not_of(PERMITTED_DOCUMENT_SYMBOLS) != std::string::npos)
 	{
 		throw CUrlParsingError("Error: invalid symbol in document");
 	}
-	m_document = doc;
+
+	return doc;
 }

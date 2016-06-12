@@ -11,6 +11,8 @@ void VerifyGivenUrl(const CHttpUrl& url, const std::string& domain, const std::s
 	BOOST_CHECK(url.GetProtocol() == protocol);
 }
 
+
+
 BOOST_AUTO_TEST_SUITE(url_tests)
 
 	BOOST_AUTO_TEST_SUITE(throws_exception)
@@ -23,7 +25,7 @@ BOOST_AUTO_TEST_SUITE(url_tests)
 		{
 			BOOST_REQUIRE_THROW(CHttpUrl url("http:/google.ru"), CUrlParsingError);
 		}
-
+		
 		BOOST_AUTO_TEST_SUITE(if_incorrect_domain)
 
 			BOOST_AUTO_TEST_CASE(name_with_spaces)
@@ -46,9 +48,14 @@ BOOST_AUTO_TEST_SUITE(url_tests)
 			{
 				BOOST_REQUIRE_THROW(CHttpUrl url("http://google.ru_"), CUrlParsingError);
 			}
+			BOOST_AUTO_TEST_CASE(no_throw_exeption_for_empty_document)
+			{
+				BOOST_REQUIRE_NO_THROW(CHttpUrl url("https://github.com/"));
+				BOOST_REQUIRE_NO_THROW(CHttpUrl url("https://github.com"));
+			}
 
 		BOOST_AUTO_TEST_SUITE_END()
-
+		
 		BOOST_AUTO_TEST_CASE(if_missing_port)
 		{
 			BOOST_REQUIRE_THROW(CHttpUrl url("http:/google.ru:/"), CUrlParsingError);
@@ -61,6 +68,26 @@ BOOST_AUTO_TEST_SUITE(url_tests)
 		{
 			BOOST_REQUIRE_THROW(CHttpUrl url("http:/google.ru/ lk"), CUrlParsingError);
 		}
+		BOOST_AUTO_TEST_CASE(throw_exeption_for_incorrect_domain)
+		{
+			BOOST_REQUIRE_THROW(CHttpUrl("https://githubcom/OOP/"), CUrlParsingError);
+		}
+		BOOST_AUTO_TEST_CASE(get_url_function_not_return_standart_port)
+		{
+			std::string givenUrl = "https://github.com/";
+			CHttpUrl url = CHttpUrl(givenUrl);
+			BOOST_CHECK_EQUAL(url.GetURL(), givenUrl);
+
+			givenUrl = "http://github.com/";
+			url = CHttpUrl(givenUrl);
+			BOOST_CHECK_EQUAL(url.GetURL(), givenUrl);
+		}
+		BOOST_AUTO_TEST_CASE(get_url_function_return_non_standart_port)
+		{
+			std::string givenUrl = "http://github.com:55/hello/";
+			CHttpUrl url = CHttpUrl(givenUrl);
+			BOOST_CHECK_EQUAL(url.GetURL(), givenUrl);
+		}
 
 	BOOST_AUTO_TEST_SUITE_END()
 
@@ -68,8 +95,8 @@ BOOST_AUTO_TEST_SUITE(url_tests)
 
 		BOOST_AUTO_TEST_CASE(if_initialize_from_string)
 		{
-			CHttpUrl url("http://google.ru/docs/sdj");
-			VerifyGivenUrl(url, "google.ru", "/docs/sdj", HTTP, 80);
+			CHttpUrl url("http://google.ru/docs/sdj/");
+			VerifyGivenUrl(url, "google.ru", "/docs/sdj/", HTTP, 80);
 		}
 		BOOST_AUTO_TEST_CASE(if_initialize_from_not_full_data)
 		{
@@ -80,6 +107,23 @@ BOOST_AUTO_TEST_SUITE(url_tests)
 		{
 			CHttpUrl url("google.ru", "doc", HTTPS, 45);
 			VerifyGivenUrl(url, "google.ru", "/doc", HTTPS, 45);
+		}
+
+	BOOST_AUTO_TEST_SUITE_END()
+
+	BOOST_AUTO_TEST_SUITE(throwing_exception_if)
+
+		BOOST_AUTO_TEST_CASE(_spaces_in_document)
+		{
+			BOOST_REQUIRE_THROW(CHttpUrl url("google.ru", "/docs /sdj/", HTTP, 80), CUrlParsingError);
+		}
+		BOOST_AUTO_TEST_CASE(_spaces_in_domain)
+		{
+			BOOST_REQUIRE_THROW(CHttpUrl("goo gle.ru", "/docs", HTTP, 80), CUrlParsingError);
+		}
+		BOOST_AUTO_TEST_CASE(_empty_domain)
+		{
+			BOOST_REQUIRE_THROW(CHttpUrl("", "/docs", HTTP, 80), CUrlParsingError);
 		}
 
 	BOOST_AUTO_TEST_SUITE_END()

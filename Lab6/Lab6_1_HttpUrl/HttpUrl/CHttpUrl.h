@@ -1,9 +1,9 @@
 #pragma once
 #include "CUrlParsingError.h"
-#include <string>
 
 const static std::string PERMITTED_DOMAIN_NAME_SYMBOLS = "abcdefghijklmnopqrstuvwxyz1234567890-";
 const static std::string PERMITTED_DOMAIN_TYPE_SYMBOLS = "abcdefghijklmnopqrstuvwxyz";
+const static std::string PERMITTED_DOCUMENT_SYMBOLS = "abcdefghijklmnopqrstuvwxyz1234567890/-&$?._=";
 
 enum Protocol
 {
@@ -33,13 +33,13 @@ private:
 
 	void ParseUrl(const std::string& url);
 	std::string ParseUrlForDomain(const std::string& url);
-	void VerifyDomain(const std::string& domain);
+	std::string VerifyAndApplyDomain(const std::string& domain);
 	std::string ParseUrlForProtocol(const std::string& url);
-	void VerifyProtocol(const std::string& protocol);
+	Protocol VerifyAndApplyProtocol(const std::string& protocol);
 	unsigned short ParseUrlForPort(const std::string& url);
-	void VerifyPort(const unsigned short& port);
+	unsigned short ApplyPort(unsigned short port);
 	std::string ParseUrlForDocument(const std::string& url);
-	void VerifyDocument(const std::string& document);
+	std::string VerifyAndApplyDocument(const std::string& document);
 
 	std::string m_domain;
 	std::string m_document;

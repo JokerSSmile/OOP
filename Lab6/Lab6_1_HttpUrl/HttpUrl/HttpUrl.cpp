@@ -11,11 +11,12 @@ int main()
 {
 	try
 	{
-		CHttpUrl url("google.ru", "doc", HTTPS, 443);
+		CHttpUrl url = CHttpUrl("google.ru", "/docs/sdj/", HTTP, 80);
 		cout << url.GetProtocol() << endl;
 		cout << url.GetDomain() << endl;
 		cout << url.GetPort() << endl;
 		cout << url.GetDocument() << endl;
+		cout << url.GetURL() << endl;
 	}
 	catch (const std::exception& err)
 	{
