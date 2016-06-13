@@ -11,7 +11,7 @@ int main()
 {
 	try
 	{
-		CHttpUrl url = CHttpUrl("google.ru", "/docs/sdj/", HTTP, 80);
+		CHttpUrl url = CHttpUrl("https://yandex.ru/get:80");
 		cout << url.GetProtocol() << endl;
 		cout << url.GetDomain() << endl;
 		cout << url.GetPort() << endl;
@@ -23,8 +23,6 @@ int main()
 		cout << err.what() << endl;
 	}
 	
-	
-
     return 0;
 }
 

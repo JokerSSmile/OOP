@@ -27,7 +27,8 @@ std::string CHttpUrl::GetURL() const
 	std::string url;
 	GetProtocol() == HTTP ? url += "http://" : url += "https://";
 	url += m_domain;
-	if (GetPort() != 80 && GetPort() != 443)
+	if (GetPort() != 80 && GetProtocol() == HTTP ||
+		GetPort() != 443 && GetProtocol() == HTTPS)
 	{
 		url += ":" + std::to_string(GetPort());
 	}
@@ -150,9 +151,9 @@ unsigned short CHttpUrl::ParseUrlForPort(const std::string & url)
 	size_t minPosOfDelimeter = 8;
 	std::string containsPort = url.substr(minPosOfDelimeter, url.size());
 
-	size_t portDelimeterPos = containsPort.find(':');
+	size_t portDelimeterPos = containsPort.find_first_of(":/");
 
-	if (portDelimeterPos == std::string::npos)
+	if (portDelimeterPos == std::string::npos || containsPort[portDelimeterPos] == '/')
 	{
 		switch (m_protocol)
 		{

@@ -64,6 +64,10 @@ BOOST_AUTO_TEST_SUITE(url_tests)
 		{
 			BOOST_REQUIRE_THROW(CHttpUrl url("http:/google.ru:84g5/"), CUrlParsingError);
 		}
+		BOOST_AUTO_TEST_CASE(if_incorrect_port_)
+		{
+			BOOST_REQUIRE_THROW(CHttpUrl url("http:/google.ru:d/"), CUrlParsingError);
+		}
 		BOOST_AUTO_TEST_CASE(if_incorrect_document)
 		{
 			BOOST_REQUIRE_THROW(CHttpUrl url("http:/google.ru/ lk"), CUrlParsingError);
@@ -71,22 +75,6 @@ BOOST_AUTO_TEST_SUITE(url_tests)
 		BOOST_AUTO_TEST_CASE(throw_exeption_for_incorrect_domain)
 		{
 			BOOST_REQUIRE_THROW(CHttpUrl("https://githubcom/OOP/"), CUrlParsingError);
-		}
-		BOOST_AUTO_TEST_CASE(get_url_function_not_return_standart_port)
-		{
-			std::string givenUrl = "https://github.com/";
-			CHttpUrl url = CHttpUrl(givenUrl);
-			BOOST_CHECK_EQUAL(url.GetURL(), givenUrl);
-
-			givenUrl = "http://github.com/";
-			url = CHttpUrl(givenUrl);
-			BOOST_CHECK_EQUAL(url.GetURL(), givenUrl);
-		}
-		BOOST_AUTO_TEST_CASE(get_url_function_return_non_standart_port)
-		{
-			std::string givenUrl = "http://github.com:55/hello/";
-			CHttpUrl url = CHttpUrl(givenUrl);
-			BOOST_CHECK_EQUAL(url.GetURL(), givenUrl);
 		}
 
 	BOOST_AUTO_TEST_SUITE_END()
@@ -107,6 +95,43 @@ BOOST_AUTO_TEST_SUITE(url_tests)
 		{
 			CHttpUrl url("google.ru", "doc", HTTPS, 45);
 			VerifyGivenUrl(url, "google.ru", "/doc", HTTPS, 45);
+		}
+
+	BOOST_AUTO_TEST_SUITE_END()
+
+	BOOST_AUTO_TEST_SUITE(get_url_function_works_correct)
+
+		BOOST_AUTO_TEST_CASE(_if_port_is_declared_by_protocol_not_prints_port)
+		{
+			std::string givenUrl = "https://github.com/";
+			CHttpUrl url = CHttpUrl(givenUrl);
+			BOOST_CHECK_EQUAL(url.GetURL(), givenUrl);
+
+			givenUrl = "http://github.com/";
+			url = CHttpUrl(givenUrl);
+			BOOST_CHECK_EQUAL(url.GetURL(), givenUrl);
+		}
+		BOOST_AUTO_TEST_CASE(_if_port_declared_by_user_not_prints_port)
+		{
+			std::string givenUrl = "http://github.com:80/hello/";
+			CHttpUrl url = CHttpUrl(givenUrl);
+			BOOST_CHECK_EQUAL(url.GetURL(), "http://github.com/hello/");
+
+			givenUrl = "https://github.com:443/hello/";
+			url = CHttpUrl(givenUrl);
+			BOOST_CHECK_EQUAL(url.GetURL(), "https://github.com/hello/");
+		}
+		BOOST_AUTO_TEST_CASE(_if_for_http_port_443_prints_port)
+		{
+			std::string givenUrl = "http://github.com:443/hello/";
+			CHttpUrl url = CHttpUrl(givenUrl);
+			BOOST_CHECK_EQUAL(url.GetURL(), "http://github.com:443/hello/");
+		}
+		BOOST_AUTO_TEST_CASE(_if_for_https_port_80_prints_port)
+		{
+			std::string givenUrl = "https://github.com:80/hello/";
+			CHttpUrl url = CHttpUrl(givenUrl);
+			BOOST_CHECK_EQUAL(url.GetURL(), "https://github.com:80/hello/");
 		}
 
 	BOOST_AUTO_TEST_SUITE_END()

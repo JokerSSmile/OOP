@@ -3,7 +3,7 @@
 
 const static std::string PERMITTED_DOMAIN_NAME_SYMBOLS = "abcdefghijklmnopqrstuvwxyz1234567890-";
 const static std::string PERMITTED_DOMAIN_TYPE_SYMBOLS = "abcdefghijklmnopqrstuvwxyz";
-const static std::string PERMITTED_DOCUMENT_SYMBOLS = "abcdefghijklmnopqrstuvwxyz1234567890/-&$?._=";
+const static std::string PERMITTED_DOCUMENT_SYMBOLS = "abcdefghijklmnopqrstuvwxyz1234567890/-&$?._=:";
 
 enum Protocol
 {
