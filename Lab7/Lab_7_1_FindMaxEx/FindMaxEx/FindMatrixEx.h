@@ -10,15 +10,15 @@ bool FindMaxEx(const std::vector<T>& array, T& maxValue, const Less& less)
 	}
 
 	
-	auto maxTempValue = array[0];
-	for (size_t pos = 1; pos < array.size(); pos++)
+	auto maxTempValue = array.begin();
+	for (auto it = array.begin(); it != array.end(); it++)
 	{
-		if (less(maxTempValue, array[pos]))
+		if (less(*maxTempValue, *it))
 		{
-			maxTempValue = array[pos];
+			maxTempValue = it;
 		}
 	}
 
-	maxValue = maxTempValue;
+	maxValue = *maxTempValue;
 	return true;
 }

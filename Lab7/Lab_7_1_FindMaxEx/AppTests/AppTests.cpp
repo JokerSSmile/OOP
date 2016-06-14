@@ -1,6 +1,24 @@
 #include "stdafx.h"
 #include "../FindMaxEx/FindMatrixEx.h"
 #include <iostream>
+#include <vector>
+
+struct Student
+{
+	Student()
+		:name(),
+		height(0),
+		weight(0)
+	{};
+	Student(const std::string & name, int height, int weight)
+		:name(name),
+		height(height),
+		weight(weight)
+	{};
+	std::string name;
+	int height;
+	int weight;
+};
 
 BOOST_AUTO_TEST_SUITE(find_max_tests)
 
@@ -29,6 +47,30 @@ BOOST_AUTO_TEST_CASE(correct_string_max)
 	bool result = FindMaxEx(arr, maxStr, [](std::string left, std::string right)
 		{return left < right;});
 	BOOST_CHECK(maxStr == "your");
+}
+
+BOOST_AUTO_TEST_CASE(correct_with_structures)
+{
+	std::vector<Student> students = {
+		Student("Artem", 160, 70),
+		Student("Vasya", 176, 75),
+		Student("Petr", 180, 90),
+		Student("Dima", 165, 100)
+	};
+
+	Student theHighest;
+	auto highest = FindMaxEx(students, theHighest, [&](const auto& left, const auto& right)
+	{
+		return left.height < right.height;
+	});
+	BOOST_CHECK(theHighest.height == 180);
+
+	Student theFatest;
+	auto fatest = FindMaxEx(students, theHighest, [&](const auto& left, const auto& right)
+	{
+		return left.weight < right.weight;
+	});
+	BOOST_CHECK(theHighest.weight == 100);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
